@@ -1,8 +1,5 @@
+import { Outlet } from "react-router-dom";
 import GalaxyScene from "../galaxy/Galaxy";
-import { OnBoardingTitle } from "./components/OnBoardingTitle";
-import { OnBoardingLogin } from "./components/OnBoardingLogin";
-import { OnBoardingGetStartedButton } from "./components/OnBoardingGetStartedButton";
-import { Planet } from "../../components/shared/Planet";
 
 export const OnBoarding = () => {
   return (
@@ -10,12 +7,7 @@ export const OnBoarding = () => {
       <div className="absolute inset-0">
         <GalaxyScene />
       </div>
-      <div className="relative z-10 text-center max-w-2xl px-8">
-        <Planet />
-        <OnBoardingTitle />
-        <OnBoardingGetStartedButton />
-        <OnBoardingLogin />
-      </div>
+      <Outlet />
     </div>
   );
 };
