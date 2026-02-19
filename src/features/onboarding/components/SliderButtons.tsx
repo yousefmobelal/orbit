@@ -1,12 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const SliderButtons: React.FC<{
   activeSlide: number;
   setActiveSlide: Dispatch<SetStateAction<number>>;
   numberOfSlides: number;
 }> = ({ activeSlide, setActiveSlide, numberOfSlides }) => {
+  const navigate = useNavigate();
   return (
     <div className="flex justify-between items-center my-4 w-full md:max-w-80 mx-auto">
       <button
@@ -43,8 +45,7 @@ export const SliderButtons: React.FC<{
         transition={{ duration: 0.3, ease: "easeInOut" }}
         onClick={() => {
           if (activeSlide === numberOfSlides - 1) {
-            // Handle "Get Started" click
-            console.log("Get Started clicked");
+            navigate("/choose-first-goal");
           } else {
             setActiveSlide((prev) => prev + 1);
           }
