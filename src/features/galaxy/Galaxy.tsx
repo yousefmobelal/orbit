@@ -3,7 +3,7 @@ import { OrbitControls, Stars } from "@react-three/drei";
 
 export default function GalaxyScene() {
   return (
-    <div style={{ width: "100vw", height: "100vh", background: "#000010" }}>
+    <div className="w-full h-full bg-[#000010]">
       <Canvas camera={{ position: [0, 0, 12], fov: 60 }}>
         <ambientLight intensity={0.2} />
         <pointLight position={[10, 10, 10]} intensity={1} />

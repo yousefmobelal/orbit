@@ -10,7 +10,7 @@ export const SliderButtons: React.FC<{
 }> = ({ activeSlide, setActiveSlide, numberOfSlides }) => {
   const navigate = useNavigate();
   return (
-    <div className="flex justify-between items-center my-4 w-full md:max-w-80 mx-auto">
+    <div className="flex justify-between items-center w-full md:max-w-80 mx-auto">
       <button
         className={`size-8 rounded-md ${activeSlide === 0 ? "bg-[#121826] text-white" : "bg-white text-black"} flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity`}
         disabled={activeSlide === 0}

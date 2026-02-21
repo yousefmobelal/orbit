@@ -9,6 +9,7 @@ import {
   Palette,
 } from "lucide-react";
 import { GoalCard } from "../components/GoalCard";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   {
@@ -55,13 +56,12 @@ const categories = [
   },
 ];
 
-export function ChooseFirstGoal() {
+export function ChooseFirstGoalPage() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<string | null>(null);
 
-  const handleContinue = () => {};
-
   return (
-    <div className="relative z-10 w-full max-w-4xl">
+    <>
       <motion.h2
         className="text-4xl md:text-5xl text-center mb-4 text-[#F9FAFB]"
         style={{ fontFamily: "Space Grotesk, sans-serif", fontWeight: 700 }}
@@ -80,7 +80,7 @@ export function ChooseFirstGoal() {
         Choose a category for your first planet
       </motion.p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-12">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-12">
         {categories.map((category, index) => {
           const isSelected = selected === category.id;
 
@@ -98,7 +98,7 @@ export function ChooseFirstGoal() {
 
       <div className="text-center">
         <motion.button
-          onClick={handleContinue}
+          onClick={() => navigate("/customize-planet")}
           disabled={!selected}
           className={` px-10 py-4 rounded-full bg-linear-to-r from-[#4DA3FF] to-[#8B5CF6] text-white text-lg  transition-all ${
             selected ? "" : "opacity-50 cursor-not-allowed"
@@ -110,6 +110,6 @@ export function ChooseFirstGoal() {
           Continue
         </motion.button>
       </div>
-    </div>
+    </>
   );
 }

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ThirdSlide } from "../components/ThirdSlide";
 import { SliderButtons } from "../components/SliderButtons";
 
-export const HowItWorks = () => {
+export const HowItWorksPage = () => {
   const slides = [
     <FirstSlide key="slide-1" />,
     <SecondSlide key="slide-2" />,
@@ -18,7 +18,7 @@ export const HowItWorks = () => {
   ];
   const [activeSlide, setActiveSlide] = useState(0);
   return (
-    <div className="z-10 text-center max-w-2xl px-8 h-screen py-10 flex flex-col justify-between">
+    <div className="h-[90vh] flex flex-col justify-center items-center relative">
       <motion.h2
         className="text-4xl text-center mb-4 text-[#F9FAFB]"
         style={{ fontFamily: "Space Grotesk, sans-serif", fontWeight: 700 }}
@@ -47,11 +47,13 @@ export const HowItWorks = () => {
         </motion.div>
       </div>
 
-      <SliderButtons
-        activeSlide={activeSlide}
-        setActiveSlide={setActiveSlide}
-        numberOfSlides={slides.length}
-      />
+      <div className="absolute bottom-0 md:bottom-5 w-full">
+        <SliderButtons
+          activeSlide={activeSlide}
+          setActiveSlide={setActiveSlide}
+          numberOfSlides={slides.length}
+        />
+      </div>
     </div>
   );
 };

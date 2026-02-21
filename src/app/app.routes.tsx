@@ -1,8 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { OnBoarding } from "../features/onboarding/OnBoarding";
-import { Welcome } from "../features/onboarding/pages/Welcome";
-import { HowItWorks } from "../features/onboarding/pages/HowItWorks";
-import { ChooseFirstGoal } from "@/features/onboarding/pages/ChooseFirstGoal";
+import { WelcomePage } from "../features/onboarding/pages/WelcomePage";
+import { HowItWorksPage } from "../features/onboarding/pages/HowItWorksPage";
+import { ChooseFirstGoalPage } from "@/features/onboarding/pages/ChooseFirstGoalPage";
+import { CustomizePlanetPage } from "@/features/onboarding/pages/CustomizePlanetPage";
+import { AddYourFirstMissionPage } from "@/features/onboarding/pages/AddYourFirstMissionPage";
 
 const router = createBrowserRouter([
   {
@@ -11,15 +13,23 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Welcome />,
+        element: <WelcomePage />,
       },
       {
         path: "how-it-works",
-        element: <HowItWorks />,
+        element: <HowItWorksPage />,
       },
       {
         path: "choose-first-goal",
-        element: <ChooseFirstGoal />,
+        element: <ChooseFirstGoalPage />,
+      },
+      {
+        path: "customize-planet",
+        element: <CustomizePlanetPage />,
+      },
+      {
+        path: "add-first-mission",
+        element: <AddYourFirstMissionPage />,
       },
     ],
   },
