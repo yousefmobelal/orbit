@@ -8,6 +8,8 @@ import { themesLoader } from "@/features/onboarding/loaders/themes.loader";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { SignupPage } from "@/features/auth/pages/SignupPage";
 import { signupAction } from "@/features/auth/actions/signup.action";
+import { loginAction } from "@/features/auth/actions/login.action";
+import { LoginPage } from "@/features/auth/pages/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +42,11 @@ const router = createBrowserRouter([
         path: "signup",
         action: signupAction,
         element: <SignupPage />,
+      },
+      {
+        path: "login",
+        action: loginAction,
+        element: <LoginPage />,
       },
     ],
   },

@@ -1,4 +1,4 @@
-import type { Theme } from "@/types/api/theme";
+import type { Theme } from "@/types/Theme";
 import { http } from "../http";
 
 export const themesApi = {

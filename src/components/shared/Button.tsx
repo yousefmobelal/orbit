@@ -48,12 +48,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       md: "rounded-md",
     };
 
+    const isDisabled = disabled || loading;
+
     return (
       <motion.button
         ref={ref}
         className={cn(
           "font-semibold transition-all",
-          "disabled:opacity-50 disabled:cursor-not-allowed",
+          "disabled:cursor-not-allowed",
           sizeClasses[size],
           variantClasses[variant],
           roundedClasses[rounded],
@@ -63,14 +65,18 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           fontFamily: "Space Grotesk, sans-serif",
           fontWeight: 600,
         }}
-        initial={animateIn ? { opacity: 0, y: 20 } : undefined}
-        animate={animateIn ? { opacity: 1, y: 0 } : undefined}
-        transition={
-          animateIn ? { delay: animateDelay, duration: 0.6 } : undefined
+        initial={animateIn ? { opacity: 0, y: 10 } : undefined}
+        animate={
+          animateIn
+            ? { opacity: isDisabled ? 0.5 : 1, y: 0 }
+            : { opacity: isDisabled ? 0.5 : 1 }
         }
-        whileHover={!disabled && !loading ? { scale: hoverScale } : undefined}
-        whileTap={!disabled && !loading ? { scale: 0.95 } : undefined}
-        disabled={disabled || loading}
+        transition={
+          animateIn ? { delay: animateDelay, duration: 0.4 } : undefined
+        }
+        whileHover={!isDisabled ? { scale: hoverScale } : undefined}
+        whileTap={!isDisabled ? { scale: 0.95 } : undefined}
+        disabled={isDisabled}
         {...props}
       >
         {children}

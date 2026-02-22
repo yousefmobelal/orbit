@@ -8,6 +8,7 @@ import { useOnBoardingStore } from "@/store/onboarding-store";
 
 export function AddYourFirstMissionPage() {
   const setTaskData = useOnBoardingStore((s) => s.setFirstTaskData);
+  const planetData = useOnBoardingStore((s) => s.firstPlanetData);
   const [showXP, setShowXP] = useState(false);
   const [xpProgress, setXpProgress] = useState(0);
   const [mission, setMission] = useState("");
@@ -28,7 +29,7 @@ export function AddYourFirstMissionPage() {
     <>
       <Title>Add Your First Mission</Title>
 
-      <Subtitle>{`Start building momentum for {"planetName"}`}</Subtitle>
+      <Subtitle>{`Start building momentum for ${planetData?.name || "Planet"}`}</Subtitle>
       <FirstMissionPlanetXpCard showXP={showXP} xpProgress={xpProgress} />
       <FirstMissionInput
         mission={mission}

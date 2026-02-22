@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from "@/components/shared/Loader";
 import { toast } from "@/lib/utils/toast";
 import { ErrorState } from "@/components/shared/ErrorState";
-import type { Theme } from "@/types/api/theme";
+import type { Theme } from "@/types/Theme";
 import { queryKeys } from "@/lib/utils/queryKeys";
 import { useNavigate } from "react-router-dom";
 import { Title } from "@/components/shared/Title";

@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { motion } from "framer-motion";
 import { Label } from "./label";
 import { cn } from "@/lib/utils/cn";
 import { Eye, EyeOff } from "lucide-react";
@@ -25,7 +25,12 @@ function Input({
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
-    <div className={cn("w-full", containerClassName)}>
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2, duration: 0.4 }}
+      className={cn("w-full", containerClassName)}
+    >
       {label && <Label htmlFor={props.id}>{label}</Label>}
       <div className="relative">
         <input
@@ -73,7 +78,7 @@ function Input({
       </div>
 
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
-    </div>
+    </motion.div>
   );
 }
 

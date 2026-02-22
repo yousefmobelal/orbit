@@ -1,17 +1,17 @@
+import { Button } from "@/components/shared/Button";
+import { Loader } from "@/components/shared/Loader";
 import { Subtitle } from "@/components/shared/Subtitle";
 import { Title } from "@/components/shared/Title";
 import { Input } from "@/components/ui/input";
-import { Form, useActionData, useNavigation } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Form, useActionData, useNavigation } from "react-router-dom";
+import { LoginSchema, type LoginFormData } from "../schemas/login.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignupSchema, type SignupFormData } from "../schemas/signup.schema";
-import { Loader } from "@/components/shared/Loader";
-import { Button } from "@/components/shared/Button";
 
-export const SignupPage = () => {
+export const LoginPage = () => {
   const navigation = useNavigation();
   const actionData = useActionData() as {
-    fieldErrors: Record<string, string>;
+    fieldErrors?: Record<string, string>;
     formError?: string;
   };
   const isSubmitting = navigation.state === "submitting";
@@ -19,31 +19,22 @@ export const SignupPage = () => {
   const {
     register,
     formState: { isValid, errors },
-  } = useForm<SignupFormData>({
+  } = useForm<LoginFormData>({
     mode: "onChange",
-    resolver: zodResolver(SignupSchema),
+    resolver: zodResolver(LoginSchema),
   });
   return (
-    <>
-      <Title>Complete Your Mission Profile</Title>
-      <Subtitle>
-        Create your account to save your progress and unlock all features
-      </Subtitle>
+    <div>
+      <Title>Welcome back to Orbit</Title>
+      <Subtitle>Log in to continue your journey</Subtitle>
       {actionData?.formError && (
         <p className="text-red-500 mb-2">{actionData.formError}</p>
       )}
+
       <Form
         method="POST"
         className="w-full md:w-100 mx-auto text-start flex flex-col items-center justify-center space-y-5"
       >
-        <Input
-          id="name"
-          type="text"
-          label="Name"
-          placeholder="Your full name"
-          error={errors.name?.message || actionData?.fieldErrors?.name}
-          {...register("name")}
-        />
         <Input
           id="email"
           type="email"
@@ -54,11 +45,11 @@ export const SignupPage = () => {
         />
         <Input
           id="password"
-          type={"password"}
+          type="password"
           label="Password"
           placeholder="Min. 8 characters"
-          {...register("password")}
           error={errors.password?.message || actionData?.fieldErrors?.password}
+          {...register("password")}
         />
 
         <div className="mt-5 w-full flex flex-col items-center justify-center">
@@ -73,11 +64,11 @@ export const SignupPage = () => {
               animateDelay={0.4}
               hoverScale={1.09}
             >
-              Sign Up
+              Log In
             </Button>
           )}
         </div>
       </Form>
-    </>
+    </div>
   );
 };

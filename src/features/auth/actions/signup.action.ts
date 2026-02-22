@@ -33,14 +33,14 @@ export async function signupAction({ request }: { request: Request }) {
     });
 
     await taskApi.create({
-      planetId: planetRes._id,
+      planetId: planetRes.planet._id,
       title: firstTaskData.name!,
       difficulty: "medium",
     });
 
     // Optionally clear onboarding data after use
     useOnBoardingStore.getState().reset();
-    return redirect("/how-it-works");
+    return redirect("/home");
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {

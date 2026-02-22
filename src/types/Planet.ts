@@ -1,4 +1,4 @@
-export interface PlanetResponse {
+export interface Planet {
   _id: string;
   userId: string;
   title: string;

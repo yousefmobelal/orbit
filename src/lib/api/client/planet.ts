@@ -1,9 +1,12 @@
 import type { CreatePlanetInput } from "@/types/api/CreatePlanetInput";
 import { http } from "../http";
-import type { PlanetResponse } from "@/types/Planet";
+import type { Planet } from "@/types/Planet";
+import type { Narrative } from "@/types/Narrative";
 
 export const planetApi = {
-  create: async (data: CreatePlanetInput): Promise<PlanetResponse> => {
-    return http.post("/planets", data);
+  create: async (
+    data: CreatePlanetInput,
+  ): Promise<{ planet: Planet; narrative: Narrative }> => {
+    return http.post("/planet", data);
   },
 };
