@@ -1,9 +1,11 @@
+import type { Theme } from "./Theme";
+
 export interface Planet {
   _id: string;
   userId: string;
   title: string;
   description?: string;
-  theme: string;
+  theme: Theme;
   level: number;
   xp: number;
   streakCount: number;

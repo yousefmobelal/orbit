@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Planet } from "@/components/shared/Planet";
 import { Input } from "@/components/ui/input";
-import { themesApi } from "@/lib/api/client/theme";
+import { themesApi } from "@/lib/api/client/themeApi";
 import { useQuery } from "@tanstack/react-query";
 import { Loader } from "@/components/shared/Loader";
 import { toast } from "@/lib/utils/toast";

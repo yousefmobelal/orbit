@@ -2,7 +2,7 @@ import { getFieldErrors } from "@/lib/utils/zodErrors";
 import { LoginSchema } from "../schemas/login.schema";
 import { storage } from "@/lib/utils/storage";
 import { storageKeys } from "@/lib/utils/storageKeys";
-import { authApi } from "@/lib/api/client/auth";
+import { authApi } from "@/lib/api/client/authApi";
 import { redirect } from "react-router-dom";
 
 export async function loginAction({ request }: { request: Request }) {

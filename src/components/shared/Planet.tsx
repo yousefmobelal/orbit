@@ -28,9 +28,9 @@ export const Planet: React.FC<{
           }}
           animate={{
             boxShadow: [
-              "0 0 20px rgba(77, 163, 255, 0.4)",
-              "0 0 30px rgba(77, 163, 255, 0.6)",
-              "0 0 20px rgba(77, 163, 255, 0.4)",
+              `0 0 20px ${fromColor}`,
+              `0 0 30px ${toColor}`,
+              `0 0 20px ${fromColor}`,
             ],
           }}
           transition={{

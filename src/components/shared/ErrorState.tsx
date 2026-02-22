@@ -15,12 +15,12 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
 }) => {
   return (
     <motion.div
-      className="flex items-center justify-center min-h-75 p-6"
+      className="flex items-center justify-center p-6"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="bg-[#121826] rounded-2xl p-8 backdrop-blur-sm border border-white/10 text-center max-w-md">
+      <div className="bg-[#121826] rounded-2xl p-8 backdrop-blur-sm border border-white/10 text-center min-h-75 aspect-square">
         <motion.div
           className="flex justify-center mb-4"
           initial={{ scale: 0 }}
@@ -28,7 +28,6 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
           transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
         >
           <div className="relative">
-            {/* Glow effect */}
             <div
               className="absolute inset-0 rounded-full blur-xl opacity-40"
               style={{ backgroundColor: "#EF4444" }}

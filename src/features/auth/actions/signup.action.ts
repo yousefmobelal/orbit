@@ -1,12 +1,12 @@
 import { getFieldErrors } from "@/lib/utils/zodErrors";
 import { SignupSchema } from "../schemas/signup.schema";
-import { authApi } from "@/lib/api/client/auth";
+import { authApi } from "@/lib/api/client/authApi";
 import { redirect } from "react-router-dom";
 import { storage } from "@/lib/utils/storage";
 import { storageKeys } from "@/lib/utils/storageKeys";
-import { planetApi } from "@/lib/api/client/planet";
+import { planetApi } from "@/lib/api/client/planetApi";
 import { useOnBoardingStore } from "@/store/onboarding-store";
-import { taskApi } from "@/lib/api/client/task";
+import { taskApi } from "@/lib/api/client/taskApi";
 
 export async function signupAction({ request }: { request: Request }) {
   const formData = Object.fromEntries(await request.formData());

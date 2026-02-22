@@ -7,9 +7,20 @@ type ApiSuccessResponse<T = unknown> = {
   statusCode?: number;
 };
 
+type ValidationIssue = {
+  path: string;
+  message: string;
+};
+
 type ApiErrorResponse = {
   message?: string;
   statusCode?: number;
+  error?: {
+    statusCode?: number;
+    details?: {
+      issues?: ValidationIssue[];
+    };
+  };
 };
 
 export const logResponse = (response: AxiosResponse) => {
@@ -40,11 +51,24 @@ export const logError = (error: AxiosError) => {
 };
 
 export const handleError = (error: AxiosError<ApiErrorResponse>) => {
+  console.log(`This is the error: ${JSON.stringify(error.response?.data)}`);
+
+  const responseData = error.response?.data;
+
+  // Extract validation issues if they exist
+  const validationIssues = responseData?.error?.details?.issues;
+
+  // Use the first validation issue message if available, otherwise use the generic message
   const message =
-    error.response?.data?.message || error.message || "Something went wrong";
+    validationIssues && validationIssues.length > 0
+      ? validationIssues[0].message
+      : responseData?.message || error.message || "Something went wrong";
 
   const statusCode =
-    error.response?.data?.statusCode || error.response?.status || 500;
+    responseData?.error?.statusCode ||
+    responseData?.statusCode ||
+    error.response?.status ||
+    500;
 
-  return Promise.reject(new HttpError(message, statusCode));
+  return Promise.reject(new HttpError(message, statusCode, validationIssues));
 };

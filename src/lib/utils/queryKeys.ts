@@ -1,4 +1,7 @@
 export const queryKeys = {
   themes: ["themes"],
-  events: (id: string) => ["events", id],
+  currentUser: ["currentUser"],
+  planets: ["planets"],
+  planet: (id: string) => ["planet", id],
+  tasks: (planetId: string) => ["tasks", planetId],
 };

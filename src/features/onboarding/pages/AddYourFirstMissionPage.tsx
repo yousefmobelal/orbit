@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FirstMissionPlanetXpCard } from "../components/FirstMissionPlanetXpCard";
 import { FirstMissionInput } from "../components/FirstMissionInput";
-import { FirstMissionEnterGalaxyButton } from "../components/FirstMissionEnterGalaxyButton";
+import { FirstMissionCompleteProfileButton } from "../components/FirstMissionCompleteProfileButton";
 import { Title } from "@/components/shared/Title";
 import { Subtitle } from "@/components/shared/Subtitle";
 import { useOnBoardingStore } from "@/store/onboarding-store";
@@ -30,14 +30,18 @@ export function AddYourFirstMissionPage() {
       <Title>Add Your First Mission</Title>
 
       <Subtitle>{`Start building momentum for ${planetData?.name || "Planet"}`}</Subtitle>
-      <FirstMissionPlanetXpCard showXP={showXP} xpProgress={xpProgress} />
+      <FirstMissionPlanetXpCard
+        showXP={showXP}
+        xpProgress={xpProgress}
+        planetName={planetData?.name || "Planet"}
+      />
       <FirstMissionInput
         mission={mission}
         setMission={setMission}
         handleAddMission={handleAddMission}
         showXP={showXP}
       />
-      {showXP && <FirstMissionEnterGalaxyButton />}
+      {showXP && <FirstMissionCompleteProfileButton />}
     </>
   );
 }

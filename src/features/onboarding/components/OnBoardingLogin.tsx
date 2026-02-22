@@ -12,7 +12,7 @@ export const OnBoardingLogin = () => {
     >
       Already have an account?
       <button
-        onClick={() => navigate("/login")}
+        onClick={() => navigate("/auth/login")}
         className="text-[#4DA3FF] hover:text-[#22D3EE] transition-colors underline ms-1"
       >
         Log in

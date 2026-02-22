@@ -1,13 +1,13 @@
 import GalaxyScene from "@/features/galaxy/Galaxy";
 import { Outlet } from "react-router-dom";
 
-export const RootLayout = () => {
+export const AppLayout = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center overflow-hidden relative">
+    <div className="min-h-screen flex justify-center overflow-hidden relative">
       <div className="absolute inset-0">
         <GalaxyScene />
       </div>
-      <div className="relative z-10 text-center w-full max-w-5xl px-5 md:px-8 lg:px-12 py-8">
+      <div className="relative z-10 w-full">
         <Outlet />
       </div>
     </div>

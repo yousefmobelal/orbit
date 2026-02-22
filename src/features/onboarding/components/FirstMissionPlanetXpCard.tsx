@@ -1,14 +1,16 @@
 import { Planet } from "@/components/shared/Planet";
+import { XpProgressBar } from "@/components/shared/XpProgressBar";
 import { motion } from "framer-motion";
 
 interface FirstMissionPlanetXpCardProps {
   showXP: boolean;
   xpProgress: number;
+  planetName: string;
 }
 
 export const FirstMissionPlanetXpCard: React.FC<
   FirstMissionPlanetXpCardProps
-> = ({ showXP, xpProgress }) => {
+> = ({ showXP, xpProgress, planetName }) => {
   const theme = { color: "#4DA3FF" };
 
   return (
@@ -29,7 +31,7 @@ export const FirstMissionPlanetXpCard: React.FC<
               fontWeight: 600,
             }}
           >
-            {"planetName"}
+            {planetName || "Planet Name"}
           </h3>
           <div className="px-2 py-0.5 w-fit rounded-full bg-[#22D3EE]/20 border border-[#22D3EE]/30">
             <span
@@ -60,31 +62,7 @@ export const FirstMissionPlanetXpCard: React.FC<
         )}
       </div>
 
-      <div className="space-y-2">
-        <div className="flex justify-between text-sm">
-          <span className="text-[#9CA3AF]">XP Progress</span>
-          <span
-            className="text-[#22D3EE]"
-            style={{
-              fontFamily: "Space Grotesk, sans-serif",
-              fontWeight: 600,
-            }}
-          >
-            {xpProgress} / 100
-          </span>
-        </div>
-        <div className="h-3 bg-[#0B0F1A] rounded-full overflow-hidden">
-          <motion.div
-            className="h-full bg-linear-to-r from-[#22D3EE] to-[#4DA3FF]"
-            initial={{ width: 0 }}
-            animate={{ width: `${xpProgress}%` }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            style={{
-              boxShadow: "0 0 15px rgba(34, 211, 238, 0.5)",
-            }}
-          />
-        </div>
-      </div>
+      <XpProgressBar xp={xpProgress} />
     </motion.div>
   );
 };
