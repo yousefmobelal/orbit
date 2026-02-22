@@ -1,5 +1,5 @@
 import axios from "axios";
-import { logResponse, logError } from "./interceptors";
+import { logResponse, logError, unwrapData, handleError } from "./interceptors";
 import { storage } from "../utils/storage";
 import { storageKeys } from "../utils/storageKeys";
 
@@ -17,14 +17,22 @@ export const http = axios.create({
   },
 });
 
+http.interceptors.request.use((config) => {
+  const token = storage.get(storageKeys.ACCESS_TOKEN);
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
 if (import.meta.env.DEV) {
   http.interceptors.response.use(logResponse, logError);
 }
 
-const token = storage.get(storageKeys.AUTH_TOKEN);
-if (token) {
-  http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
+http.interceptors.response.use(unwrapData);
+http.interceptors.response.use(undefined, handleError);
 
 export function setAuthToken(token: string | null) {
   if (token) {

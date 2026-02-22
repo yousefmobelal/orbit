@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Label } from "./label";
 import { cn } from "@/lib/utils/cn";
+import { Eye, EyeOff } from "lucide-react";
 
 function Input({
   className,
@@ -21,12 +22,14 @@ function Input({
   icon?: React.ReactNode;
   onIconClick?: () => void;
 }) {
+  const [showPassword, setShowPassword] = React.useState(false);
+
   return (
-    <div className={containerClassName}>
+    <div className={cn("w-full", containerClassName)}>
       {label && <Label htmlFor={props.id}>{label}</Label>}
       <div className="relative">
         <input
-          type={type}
+          type={showPassword ? "text" : type}
           data-slot="input"
           className={cn(
             "w-full px-4 py-3 rounded-xl bg-[#121826] border border-white/10 text-[#F9FAFB] placeholder-[#9CA3AF] focus:border-[#4DA3FF] focus:outline-none transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
@@ -43,14 +46,29 @@ function Input({
             {leadingIcon}
           </div>
         )}
-        {icon && (
+        {type === "password" ? (
           <button
             type="button"
-            onClick={onIconClick}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors"
+            aria-label={showPassword ? "Hide password" : "Show password"}
           >
-            {icon}
+            {showPassword ? (
+              <EyeOff className="size-5" />
+            ) : (
+              <Eye className="size-5" />
+            )}
           </button>
+        ) : (
+          icon && (
+            <button
+              type="button"
+              onClick={onIconClick}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#F9FAFB] transition-colors"
+            >
+              {icon}
+            </button>
+          )
         )}
       </div>
 

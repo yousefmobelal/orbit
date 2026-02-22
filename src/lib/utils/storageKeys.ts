@@ -1,3 +1,4 @@
 export const storageKeys = {
-  AUTH_TOKEN: "auth_token",
+  ACCESS_TOKEN: "access_token",
+  REFRESH_TOKEN: "refresh_token",
 };

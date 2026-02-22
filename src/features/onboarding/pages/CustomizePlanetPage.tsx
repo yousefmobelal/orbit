@@ -1,81 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Planet } from "@/components/shared/Planet";
 import { Input } from "@/components/ui/input";
+import { themesApi } from "@/lib/api/client/theme";
+import { useQuery } from "@tanstack/react-query";
+import { Loader } from "@/components/shared/Loader";
+import { toast } from "@/lib/utils/toast";
+import { ErrorState } from "@/components/shared/ErrorState";
+import type { Theme } from "@/types/api/theme";
+import { queryKeys } from "@/lib/utils/queryKeys";
 import { useNavigate } from "react-router-dom";
-
-const themeColors = [
-  {
-    id: "aurora-blue",
-    name: "Aurora Blue",
-    fromColor: "#4DA3FF",
-    toColor: "#22D3EE",
-  },
-  {
-    id: "solar-gold",
-    name: "Solar Gold",
-    fromColor: "#FBBF24",
-    toColor: "#F59E0B",
-  },
-  {
-    id: "crimson-nova",
-    name: "Crimson Nova",
-    fromColor: "#EF4444",
-    toColor: "#F97316",
-  },
-  {
-    id: "emerald-pulse",
-    name: "Emerald Pulse",
-    fromColor: "#10B981",
-    toColor: "#22D3EE",
-  },
-  {
-    id: "violet-drift",
-    name: "Violet Drift",
-    fromColor: "#8B5CF6",
-    toColor: "#EC4899",
-  },
-  {
-    id: "silver-orbit",
-    name: "Silver Orbit",
-    fromColor: "#94A3B8",
-    toColor: "#64748B",
-  },
-];
+import { Title } from "@/components/shared/Title";
+import { Subtitle } from "@/components/shared/Subtitle";
+import { useOnBoardingStore } from "@/store/onboarding-store";
 
 export function CustomizePlanetPage() {
+  const setPlanetData = useOnBoardingStore((s) => s.setFirstPlanetData);
   const navigate = useNavigate();
   const [planetName, setPlanetName] = useState("");
-  const [selectedTheme, setSelectedTheme] = useState(themeColors[0]);
+  const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   function isValidName() {
-    return planetName.length > 0;
+    return planetName.length > 3;
+  }
+
+  const {
+    data: themeColors,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: queryKeys.themes,
+    queryFn: themesApi.getAll,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
+
+  if (themeColors && !selectedTheme) {
+    setSelectedTheme(themeColors[0]);
+  }
+
+  if (isLoading || !selectedTheme) return <Loader />;
+
+  if (error) return <ErrorState message={error.message} />;
+
+  function onSubmit() {
+    setPlanetData({
+      name: planetName,
+      theme: selectedTheme!._id,
+    });
+    navigate("/add-first-mission");
   }
 
   return (
     <>
-      <motion.h2
-        className="text-4xl md:text-5xl text-center mb-4 text-[#F9FAFB]"
-        style={{ fontFamily: "Space Grotesk, sans-serif", fontWeight: 700 }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        Customize Your Planet
-      </motion.h2>
+      <Title>Customize Your Planet</Title>
 
-      <motion.p
-        className="text-center text-[#9CA3AF] text-lg mb-5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        Make it uniquely yours
-      </motion.p>
+      <Subtitle>Give your planet a name and choose its theme color.</Subtitle>
 
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <Planet
           fromColor={selectedTheme.fromColor}
           toColor={selectedTheme.toColor}
-          viaColor={selectedTheme.fromColor}
           size={48}
         />
 
@@ -106,25 +95,25 @@ export function CustomizePlanetPage() {
               Theme Color
             </label>
             <div className="grid grid-cols-3 gap-3">
-              {themeColors.map((theme) => (
+              {themeColors?.map((theme) => (
                 <button
-                  key={theme.id}
+                  key={theme._id}
                   onClick={() => setSelectedTheme(theme)}
                   className={`p-4 rounded-xl bg-[#121826] border transition-all ${
-                    selectedTheme.id === theme.id
+                    selectedTheme._id === theme._id
                       ? "border-2 scale-105"
                       : "border border-white/10 hover:border-white/20"
                   }`}
                   style={{
                     borderColor:
-                      selectedTheme.id === theme.id
+                      selectedTheme._id === theme._id
                         ? theme.fromColor
                         : undefined,
                   }}
                 >
                   <div className="flex flex-col items-center gap-2">
                     <div className="relative">
-                      {selectedTheme.id === theme.id && (
+                      {selectedTheme._id === theme._id && (
                         <div
                           className="absolute inset-0 rounded-full blur-md opacity-50"
                           style={{ backgroundColor: theme.fromColor }}
@@ -152,7 +141,7 @@ export function CustomizePlanetPage() {
             transition={{ delay: 0.7 }}
           >
             <button
-              onClick={() => navigate("/add-first-mission")}
+              onClick={onSubmit}
               disabled={!isValidName()}
               className={`w-full py-4 rounded-full bg-linear-to-r from-[#4DA3FF] to-[#8B5CF6] text-white text-lg  transition-all ${
                 isValidName() ? "" : "opacity-50 cursor-not-allowed"

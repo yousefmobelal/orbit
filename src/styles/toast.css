@@ -1,0 +1,73 @@
+/* Custom toast styles matching Orbit theme */
+
+.Toastify__toast-container {
+  z-index: 9999;
+}
+
+.Toastify__toast {
+  background: #121826 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  padding: 16px !important;
+}
+
+.Toastify__toast--success {
+  border-left: 3px solid #10b981 !important;
+}
+
+.Toastify__toast--error {
+  border-left: 3px solid #ef4444 !important;
+}
+
+.Toastify__toast--warning {
+  border-left: 3px solid #f59e0b !important;
+}
+
+.Toastify__toast--info {
+  border-left: 3px solid #4da3ff !important;
+}
+
+.Toastify__toast-body {
+  color: #f9fafb !important;
+  font-family: "Inter", sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  padding: 0 !important;
+}
+
+.Toastify__progress-bar {
+  height: 3px !important;
+}
+
+.Toastify__progress-bar--success {
+  background: linear-gradient(to right, #10b981, #22d3ee) !important;
+}
+
+.Toastify__progress-bar--error {
+  background: linear-gradient(to right, #ef4444, #f97316) !important;
+}
+
+.Toastify__progress-bar--warning {
+  background: linear-gradient(to right, #fbbf24, #f59e0b) !important;
+}
+
+.Toastify__progress-bar--info {
+  background: linear-gradient(to right, #4da3ff, #8b5cf6) !important;
+}
+
+.Toastify__close-button {
+  color: #9ca3af !important;
+  opacity: 0.7 !important;
+}
+
+.Toastify__close-button:hover {
+  color: #f9fafb !important;
+  opacity: 1 !important;
+}
+
+.Toastify__close-button > svg {
+  height: 16px !important;
+  width: 16px !important;
+}

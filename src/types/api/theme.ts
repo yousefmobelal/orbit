@@ -1,5 +1,5 @@
 export interface Theme {
-  id: string;
+  _id: string;
   name: string;
   fromColor: string;
   toColor: string;

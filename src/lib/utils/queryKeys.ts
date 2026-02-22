@@ -1,4 +1,4 @@
 export const queryKeys = {
-  auth: ["auth"],
+  themes: ["themes"],
   events: (id: string) => ["events", id],
 };

@@ -4,6 +4,7 @@ import { SecondSlide } from "../components/SecondSlide";
 import { useState } from "react";
 import { ThirdSlide } from "../components/ThirdSlide";
 import { SliderButtons } from "../components/SliderButtons";
+import { Title } from "@/components/shared/Title";
 
 export const HowItWorksPage = () => {
   const slides = [
@@ -19,14 +20,7 @@ export const HowItWorksPage = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   return (
     <div className="h-[90vh] flex flex-col justify-center items-center relative">
-      <motion.h2
-        className="text-4xl text-center mb-4 text-[#F9FAFB]"
-        style={{ fontFamily: "Space Grotesk, sans-serif", fontWeight: 700 }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        How It Works
-      </motion.h2>
+      <Title>How It Works</Title>
 
       <div className="mb-8 flex items-center justify-center">
         <motion.div

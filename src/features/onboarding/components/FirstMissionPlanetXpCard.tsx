@@ -19,11 +19,7 @@ export const FirstMissionPlanetXpCard: React.FC<
       transition={{ delay: 0.3 }}
     >
       <div className="flex items-center gap-3 md:gap-6 mb-6">
-        <Planet
-          fromColor={theme.color}
-          toColor={theme.color}
-          viaColor={theme.color}
-        />
+        <Planet fromColor={theme.color} toColor={theme.color} />
 
         <div className="flex-1 flex flex-col items-start">
           <h3

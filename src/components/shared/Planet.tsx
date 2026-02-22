@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 export const Planet: React.FC<{
   fromColor: string;
-  viaColor: string;
   toColor: string;
   size?: number;
-}> = ({ fromColor, viaColor, toColor, size = 16 }) => {
+}> = ({ fromColor, toColor, size = 16 }) => {
   const sizeInRem = size * 0.25;
 
   return (
@@ -25,7 +24,7 @@ export const Planet: React.FC<{
           style={{
             width: `${sizeInRem}rem`,
             height: `${sizeInRem}rem`,
-            background: `linear-gradient(to bottom right, ${fromColor}, ${viaColor}, ${toColor})`,
+            background: `linear-gradient(to bottom right, ${fromColor},${toColor})`,
           }}
           animate={{
             boxShadow: [

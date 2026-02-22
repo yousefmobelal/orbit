@@ -45,7 +45,7 @@ export const SliderButtons: React.FC<{
         transition={{ duration: 0.3, ease: "easeInOut" }}
         onClick={() => {
           if (activeSlide === numberOfSlides - 1) {
-            navigate("/choose-first-goal");
+            navigate("/customize-planet");
           } else {
             setActiveSlide((prev) => prev + 1);
           }
