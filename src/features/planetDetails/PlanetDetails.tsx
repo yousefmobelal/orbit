@@ -6,11 +6,16 @@ import { taskApi } from "@/lib/api/client/taskApi";
 import { queryKeys } from "@/lib/utils/queryKeys";
 import { toast } from "@/lib/utils/toast";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Task } from "./components/Task";
+import { Menu } from "lucide-react";
+import { TaskManagementPanel } from "./components/TaskManagementPanel";
+import type { Task as TaskType } from "@/types/Task";
 
 export const PlanetDetails = () => {
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+
   const id = useParams().id!;
   const {
     isLoading,
@@ -48,7 +53,6 @@ export const PlanetDetails = () => {
     );
   if (isError) return <ErrorState message={error.message} onRetry={refetch} />;
   if (isSuccess && tasksSucess) {
-    // Map difficulty to colors
     const getDifficultyColors = (difficulty: string) => {
       switch (difficulty.toUpperCase()) {
         case "EASY":
@@ -73,9 +77,8 @@ export const PlanetDetails = () => {
       }
     };
 
-    // Group tasks into 5 columns
     const groupTasksIntoColumns = () => {
-      const columns: (typeof tasks)[] = [[], [], [], [], []];
+      const columns: TaskType[][] = [[], [], [], [], []];
       tasks.forEach((task, index) => {
         const columnIndex = index % 5;
         columns[columnIndex].push(task);
@@ -110,6 +113,31 @@ export const PlanetDetails = () => {
             </div>
           )}
         </div>
+        <button
+          onClick={() => setIsPanelOpen(true)}
+          className="size-12 rounded-full group hover:border-[#22D3EE] bg-[#121826] flex justify-center items-center border border-gray-400 absolute bottom-5 right-5 cursor-pointer"
+        >
+          <Menu className="text-gray-400 group-hover:text-[#22D3EE]" />
+        </button>
+
+        <TaskManagementPanel
+          isOpen={isPanelOpen}
+          onClose={() => setIsPanelOpen(false)}
+          planetName={planet.title}
+          planetColor={planet.theme.fromColor}
+          level={planet.level}
+          xp={planet.xp}
+          maxXp={100}
+          streak={planet.streakCount}
+          tasks={tasks}
+          onSave={(updatedTasks) => {
+            // In a real app, this would save the updated tasks to the backend
+            console.log("Saving tasks:", updatedTasks);
+          }}
+          isMobile={
+            typeof window !== "undefined" ? window.innerWidth < 768 : false
+          }
+        />
       </div>
     );
   }
