@@ -15,6 +15,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { PlanetDetails } from "@/features/planetDetails/PlanetDetails";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { planetDetailsLoader } from "@/features/planetDetails/loaders/planetDetails.loader";
+import { SettingsPage } from "@/features/settings/pages/SettingsPage";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
         element: <PlanetDetails />,
         loader: ({ params }) =>
           planetDetailsLoader({ params: { id: params.id! } }),
+      },
+      {
+        path: "settings",
+        element: <SettingsPage />,
       },
     ],
   },
