@@ -2,7 +2,9 @@ import { create } from "zustand";
 
 type FirstPlanetData = {
   name: string;
-  theme: string;
+  themeId: string;
+  fromColor: string;
+  toColor: string;
 };
 
 type FirstTaskData = {

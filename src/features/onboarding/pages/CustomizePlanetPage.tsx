@@ -50,7 +50,9 @@ export function CustomizePlanetPage() {
   function onSubmit() {
     setPlanetData({
       name: planetName,
-      theme: selectedTheme!._id,
+      themeId: selectedTheme!._id,
+      fromColor: selectedTheme!.fromColor,
+      toColor: selectedTheme!.toColor,
     });
     navigate("/add-first-mission");
   }

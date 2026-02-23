@@ -33,7 +33,7 @@ export function AddYourFirstMissionPage() {
       <FirstMissionPlanetXpCard
         showXP={showXP}
         xpProgress={xpProgress}
-        planetName={planetData?.name || "Planet"}
+        planet={planetData}
       />
       <FirstMissionInput
         mission={mission}

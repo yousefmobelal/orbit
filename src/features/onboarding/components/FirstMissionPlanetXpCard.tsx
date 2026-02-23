@@ -5,13 +5,14 @@ import { motion } from "framer-motion";
 interface FirstMissionPlanetXpCardProps {
   showXP: boolean;
   xpProgress: number;
-  planetName: string;
+  planet: Partial<{ name: string; fromColor: string; toColor: string }>;
 }
 
 export const FirstMissionPlanetXpCard: React.FC<
   FirstMissionPlanetXpCardProps
-> = ({ showXP, xpProgress, planetName }) => {
-  const theme = { color: "#4DA3FF" };
+> = ({ showXP, xpProgress, planet }) => {
+  const fromColor = planet?.fromColor || "#4DA3FF";
+  const toColor = planet?.toColor || "#8B5CF6";
 
   return (
     <motion.div
@@ -21,7 +22,7 @@ export const FirstMissionPlanetXpCard: React.FC<
       transition={{ delay: 0.3 }}
     >
       <div className="flex items-center gap-3 md:gap-6 mb-6">
-        <Planet fromColor={theme.color} toColor={theme.color} />
+        <Planet fromColor={fromColor} toColor={toColor} />
 
         <div className="flex-1 flex flex-col items-start">
           <h3
@@ -31,7 +32,7 @@ export const FirstMissionPlanetXpCard: React.FC<
               fontWeight: 600,
             }}
           >
-            {planetName || "Planet Name"}
+            {planet?.name || "Planet Name"}
           </h3>
           <div className="px-2 py-0.5 w-fit rounded-full bg-[#22D3EE]/20 border border-[#22D3EE]/30">
             <span

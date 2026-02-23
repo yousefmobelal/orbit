@@ -29,7 +29,7 @@ export async function signupAction({ request }: { request: Request }) {
 
     const planetRes = await planetApi.create({
       title: firstPlanetData.name!,
-      theme: firstPlanetData.theme!,
+      theme: firstPlanetData.themeId!,
     });
 
     await taskApi.create({
