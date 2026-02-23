@@ -32,4 +32,15 @@ export const userApi = {
       name: data.name,
     });
   },
+
+  /**
+   * Delete the current user account. Backend expects password and confirmation in the body.
+   * @param data { password: string; confirmation: string }
+   */
+  deleteAccount: async (data: {
+    password: string;
+    confirmation: string;
+  }): Promise<void> => {
+    return http.delete("/user/me", { data });
+  },
 };
