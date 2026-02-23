@@ -58,12 +58,10 @@ export const ProgressStatsCard = ({
         Progress & Stats
       </h2>
 
-      {/* XP Progress */}
       <div className="mb-6">
         <XpProgressBar xp={user?.globalXP || 0} />
       </div>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4">
         {stats.map((stat, index) => {
           const Icon = stat.icon;

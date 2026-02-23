@@ -36,7 +36,6 @@ export const AccountActionsCard = () => {
       </h2>
 
       <div className="space-y-3">
-        {/* Logout Button */}
         <motion.button
           whileHover={{ scale: 1.02, x: 4 }}
           whileTap={{ scale: 0.98 }}
@@ -52,7 +51,6 @@ export const AccountActionsCard = () => {
           </div>
         </motion.button>
 
-        {/* Delete Account */}
         {!showDeleteConfirm ? (
           <motion.button
             whileHover={{ scale: 1.02, x: 4 }}

@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { Info, Rocket, Target, Zap, Trophy } from "lucide-react";
+import {
+  Info,
+  Rocket,
+  Target,
+  Zap,
+  Trophy,
+  type LucideIcon,
+} from "lucide-react";
 
 export const AboutCard = () => {
   return (
@@ -24,7 +31,6 @@ export const AboutCard = () => {
         </h2>
       </div>
 
-      {/* App Description */}
       <div className="p-5 rounded-xl bg-[#0B0F1A] border border-white/5 mb-6">
         <div className="flex items-start gap-4 mb-4">
           <div className="size-12 rounded-xl bg-linear-to-br from-[#4DA3FF] to-[#8B5CF6] flex items-center justify-center shrink-0">
@@ -38,16 +44,15 @@ export const AboutCard = () => {
               Transform Your Tasks into a Galaxy
             </h3>
             <p className="text-[#9CA3AF] text-sm leading-relaxed">
-              Orbit is a gamified task management app that turns your to-do list into
-              an interactive space adventure. Create planets for different areas of
-              your life, add missions that orbit around them, and watch your
-              productivity galaxy grow.
+              Orbit is a gamified task management app that turns your to-do list
+              into an interactive space adventure. Create planets for different
+              areas of your life, add missions that orbit around them, and watch
+              your productivity galaxy grow.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Key Features */}
       <div className="space-y-3 mb-6">
         <p className="text-[#9CA3AF] text-xs uppercase tracking-wide mb-2">
           Key Features
@@ -75,7 +80,6 @@ export const AboutCard = () => {
         />
       </div>
 
-      {/* App Info */}
       <div className="pt-6 border-t border-white/10 space-y-3">
         <div className="flex justify-between items-center">
           <span className="text-[#9CA3AF] text-sm">Version</span>
@@ -92,11 +96,10 @@ export const AboutCard = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="mt-6 pt-6 border-t border-white/10">
         <p className="text-center text-[#9CA3AF] text-sm">
-          Made with <span className="text-[#EF4444]">❤️</span> for productive space
-          explorers
+          Made with <span className="text-[#EF4444]">❤️</span> for productive
+          space explorers
         </p>
       </div>
     </motion.div>
@@ -104,13 +107,18 @@ export const AboutCard = () => {
 };
 
 interface FeatureItemProps {
-  icon: React.ElementType;
+  icon: LucideIcon;
   title: string;
   description: string;
   color: string;
 }
 
-const FeatureItem = ({ icon: Icon, title, description, color }: FeatureItemProps) => {
+const FeatureItem = ({
+  icon: Icon,
+  title,
+  description,
+  color,
+}: FeatureItemProps) => {
   return (
     <div className="flex items-start gap-3 p-3 rounded-lg bg-[#0B0F1A]/50">
       <div
