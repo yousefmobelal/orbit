@@ -10,6 +10,7 @@ import { signupAction } from "@/features/auth/actions/signup.action";
 import { loginAction } from "@/features/auth/actions/login.action";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
 import { HomePage } from "@/features/home/pages/HomePage";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PlanetDetails } from "@/features/planetDetails/PlanetDetails";
@@ -58,19 +59,24 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "home",
-    element: <AppLayout />,
+    element: <ProtectedRoute />,
     children: [
-      { index: true, element: <HomePage /> },
       {
-        path: "planet/:id",
-        element: <PlanetDetails />,
-        loader: ({ params }) =>
-          planetDetailsLoader({ params: { id: params.id! } }),
-      },
-      {
-        path: "settings",
-        element: <SettingsPage />,
+        path: "home",
+        element: <AppLayout />,
+        children: [
+          { index: true, element: <HomePage /> },
+          {
+            path: "planet/:id",
+            element: <PlanetDetails />,
+            loader: ({ params }) =>
+              planetDetailsLoader({ params: { id: params.id! } }),
+          },
+          {
+            path: "settings",
+            element: <SettingsPage />,
+          },
+        ],
       },
     ],
   },
