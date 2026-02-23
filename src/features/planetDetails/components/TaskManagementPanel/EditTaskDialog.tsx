@@ -1,5 +1,4 @@
-﻿import { useState } from "react";
-import { Plus } from "lucide-react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,63 +6,61 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import type { Task } from "@/types/Task";
 import type { TaskDifficulty } from "@/types/TaskDifficulty";
 import type { RecurringPattern } from "@/types/RecurringPattern";
 
-interface AddTaskDialogProps {
-  onAdd: (
+interface EditTaskDialogProps {
+  task: Task;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onUpdate: (
+    taskId: string,
     title: string,
     difficulty: TaskDifficulty,
     recurring: RecurringPattern,
   ) => void;
 }
 
-export function AddTaskDialog({ onAdd }: AddTaskDialogProps) {
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [difficulty, setDifficulty] = useState<TaskDifficulty>("easy");
-  const [recurring, setRecurring] = useState<RecurringPattern>("daily");
+export function EditTaskDialog({
+  task,
+  open,
+  onOpenChange,
+  onUpdate,
+}: EditTaskDialogProps) {
+  const [title, setTitle] = useState(task.title);
+  const [difficulty, setDifficulty] = useState<TaskDifficulty>(task.difficulty);
+  const [recurring, setRecurring] = useState<RecurringPattern>(task.recurring);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim()) {
-      onAdd(title.trim(), difficulty, recurring);
-      setTitle("");
-      setDifficulty("easy");
-      setRecurring("daily");
-      setOpen(false);
+    if (task && title.trim()) {
+      onUpdate(task._id, title.trim(), difficulty, recurring);
+      onOpenChange(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="gradient" className="w-full">
-          <Plus className="w-5 h-5 mr-2" />
-          Add New Task
-        </Button>
-      </DialogTrigger>
+    <Dialog key={task._id} open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-125">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Add New Task</DialogTitle>
+            <DialogTitle>Edit Task</DialogTitle>
             <DialogDescription>
-              Create a new task for your planet. Set the title, difficulty, and
+              Update your task details. Change the title, difficulty, or
               recurrence pattern.
             </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-6 py-6">
-            {/* Title Input */}
             <div className="grid gap-2">
-              <Label htmlFor="title">Task Title</Label>
               <Input
-                id="title"
+                id="edit-title"
+                label="Task Title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., Solve 2 leetcode problems"
@@ -72,8 +69,7 @@ export function AddTaskDialog({ onAdd }: AddTaskDialogProps) {
               />
             </div>
 
-            {/* Difficulty Selection */}
-            <div className="grid gap-3">
+            <div className="grid">
               <Label>Difficulty</Label>
               <div className="grid grid-cols-3 gap-3">
                 <button
@@ -115,8 +111,7 @@ export function AddTaskDialog({ onAdd }: AddTaskDialogProps) {
               </div>
             </div>
 
-            {/* Recurring Pattern */}
-            <div className="grid gap-3">
+            <div className="grid">
               <Label>Recurrence</Label>
               <div className="grid grid-cols-2 gap-3">
                 {["none", "daily", "weekly", "monthly"].map((pattern) => (
@@ -142,12 +137,12 @@ export function AddTaskDialog({ onAdd }: AddTaskDialogProps) {
             <Button
               type="button"
               variant="outline"
-              onClick={() => setOpen(false)}
+              onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
             <Button type="submit" variant="gradient" disabled={!title.trim()}>
-              Create Task
+              Update Task
             </Button>
           </DialogFooter>
         </form>

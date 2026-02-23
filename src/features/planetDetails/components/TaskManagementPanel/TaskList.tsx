@@ -14,6 +14,7 @@ interface TaskListProps {
     difficulty: TaskDifficulty,
     recurring: RecurringPattern,
   ) => void;
+  onUpdateTask: (task: Task) => void;
   onToggleTask: (taskId: string) => void;
   onDeleteTask: (taskId: string) => void;
 }
@@ -23,6 +24,7 @@ export function TaskList({
   activeTasks,
   completedTasks,
   onAddTask,
+  onUpdateTask,
   onToggleTask,
   onDeleteTask,
 }: TaskListProps) {
@@ -38,6 +40,7 @@ export function TaskList({
               task={task}
               isCompleted={false}
               onToggle={onToggleTask}
+              onUpdate={onUpdateTask}
               onDelete={onDeleteTask}
             />
           ))}
@@ -54,6 +57,7 @@ export function TaskList({
               task={task}
               isCompleted={true}
               onToggle={onToggleTask}
+              onUpdate={onUpdateTask}
               onDelete={onDeleteTask}
             />
           ))}

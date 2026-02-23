@@ -5,16 +5,22 @@ import { planetApi } from "@/lib/api/client/planetApi";
 import { taskApi } from "@/lib/api/client/taskApi";
 import { queryKeys } from "@/lib/utils/queryKeys";
 import { toast } from "@/lib/utils/toast";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Task } from "./components/Task";
 import { Menu } from "lucide-react";
 import { TaskManagementPanel } from "./components/TaskManagementPanel";
+import { EditTaskDialog } from "./components/TaskManagementPanel/EditTaskDialog";
 import type { Task as TaskType } from "@/types/Task";
+import type { TaskDifficulty } from "@/types/TaskDifficulty";
+import type { RecurringPattern } from "@/types/RecurringPattern";
+import { queryClient } from "@/lib/utils/queryClient";
 
 export const PlanetDetails = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<TaskType | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const id = useParams().id!;
   const {
@@ -45,6 +51,53 @@ export const PlanetDetails = () => {
     }
   }, [isError, error]);
 
+  // Update task mutation
+  const updateTaskMutation = useMutation({
+    mutationFn: taskApi.update,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tasks(id) });
+      toast.success("Task updated successfully!");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to update task");
+    },
+  });
+
+  // Delete task mutation
+  const deleteTaskMutation = useMutation({
+    mutationFn: taskApi.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tasks(id) });
+      toast.success("Task deleted successfully!");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to delete task");
+    },
+  });
+
+  const handleUpdateTask = (task: TaskType) => {
+    setEditingTask(task);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleUpdateTaskSubmit = (
+    taskId: string,
+    title: string,
+    difficulty: TaskDifficulty,
+    recurring: RecurringPattern,
+  ) => {
+    updateTaskMutation.mutate({
+      taskId,
+      title,
+      difficulty,
+      recurring,
+    });
+  };
+
+  const handleDeleteTask = (taskId: string) => {
+    deleteTaskMutation.mutate(taskId);
+  };
+
   if (isLoading)
     return (
       <div className="h-screen flex items-center justify-center">
@@ -53,6 +106,7 @@ export const PlanetDetails = () => {
     );
   if (isError) return <ErrorState message={error.message} onRetry={refetch} />;
   if (isSuccess && tasksSucess) {
+    const activeTasks = tasks.filter((task) => !task.isCompleted);
     const getDifficultyColors = (difficulty: string) => {
       switch (difficulty.toUpperCase()) {
         case "EASY":
@@ -79,7 +133,7 @@ export const PlanetDetails = () => {
 
     const groupTasksIntoColumns = () => {
       const columns: TaskType[][] = [[], [], [], [], []];
-      tasks.forEach((task, index) => {
+      activeTasks.forEach((task, index) => {
         const columnIndex = index % 5;
         columns[columnIndex].push(task);
       });
@@ -95,7 +149,7 @@ export const PlanetDetails = () => {
             <div className="col-span-5 flex justify-center">
               <Loader />
             </div>
-          ) : tasks.length > 0 ? (
+          ) : activeTasks.length > 0 ? (
             groupTasksIntoColumns().map((column, columnIndex) => (
               <div
                 key={columnIndex}
@@ -103,13 +157,21 @@ export const PlanetDetails = () => {
               >
                 {column.map((task) => {
                   const colors = getDifficultyColors(task.difficulty);
-                  return <Task key={task._id} task={task} colors={colors} />;
+                  return (
+                    <Task
+                      key={task._id}
+                      task={task}
+                      colors={colors}
+                      onUpdate={handleUpdateTask}
+                      onDelete={handleDeleteTask}
+                    />
+                  );
                 })}
               </div>
             ))
           ) : (
-            <div className="col-span-5 text-center text-white/60">
-              No tasks yet. Create your first task!
+            <div className="col-span-5 text-2xl text-center text-white/60">
+              No active tasks! Click the button below to add some and start
             </div>
           )}
         </div>
@@ -125,19 +187,25 @@ export const PlanetDetails = () => {
           onClose={() => setIsPanelOpen(false)}
           planetName={planet.title}
           planetColor={planet.theme.fromColor}
+          planetId={planet._id}
           level={planet.level}
           xp={planet.xp}
           maxXp={100}
           streak={planet.streakCount}
           tasks={tasks}
-          onSave={(updatedTasks) => {
-            // In a real app, this would save the updated tasks to the backend
-            console.log("Saving tasks:", updatedTasks);
-          }}
           isMobile={
             typeof window !== "undefined" ? window.innerWidth < 768 : false
           }
         />
+
+        {editingTask && (
+          <EditTaskDialog
+            task={editingTask}
+            open={isEditDialogOpen}
+            onOpenChange={setIsEditDialogOpen}
+            onUpdate={handleUpdateTaskSubmit}
+          />
+        )}
       </div>
     );
   }

@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
-import { Trash2 } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TaskActionsMenu } from "./TaskActionsMenu";
 import type { Task } from "@/types/Task";
 
 interface TaskItemProps {
   task: Task;
   isCompleted: boolean;
   onToggle: (taskId: string) => void;
+  onUpdate: (task: Task) => void;
   onDelete: (taskId: string) => void;
 }
 
@@ -14,6 +16,7 @@ export function TaskItem({
   task,
   isCompleted,
   onToggle,
+  onUpdate,
   onDelete,
 }: TaskItemProps) {
   return (
@@ -21,7 +24,6 @@ export function TaskItem({
       className="group flex items-center gap-3 p-4 rounded-xl bg-[#0B0F1A] border border-white/5 hover:border-white/10 transition-all"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={isCompleted ? undefined : { x: 4 }}
     >
       <button
         onClick={() => onToggle(task._id)}
@@ -55,14 +57,17 @@ export function TaskItem({
       >
         {task.title}
       </span>
-      <Button
-        onClick={() => onDelete(task._id)}
-        variant="ghost"
-        size="sm"
-        className="opacity-0 group-hover:opacity-100"
+
+      <TaskActionsMenu
+        task={task}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+        align="end"
       >
-        <Trash2 className="w-4 h-4 text-[#9CA3AF] hover:text-[#EF4444]" />
-      </Button>
+        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+          <MoreVertical className="w-4 h-4 text-[#9CA3AF]" />
+        </Button>
+      </TaskActionsMenu>
     </motion.div>
   );
 }
