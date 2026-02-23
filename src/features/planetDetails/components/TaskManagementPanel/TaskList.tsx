@@ -32,7 +32,7 @@ export function TaskList({
     <div className="flex-1 overflow-y-auto p-6 space-y-3">
       {activeTab === "active" && (
         <>
-          <AddTaskDialog onAdd={onAddTask} />
+          {activeTasks.length < 10 && <AddTaskDialog onAdd={onAddTask} />}
 
           {activeTasks.map((task) => (
             <TaskItem

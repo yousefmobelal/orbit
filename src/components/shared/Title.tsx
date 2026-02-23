@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils/cn";
 
 interface TitleProps {
   children: React.ReactNode;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
 }
 
@@ -14,6 +14,7 @@ export const Title: React.FC<TitleProps> = ({
   className,
 }) => {
   const sizeClasses = {
+    xs: "text-xl md:text-2xl",
     sm: "text-2xl md:text-3xl",
     md: "text-3xl md:text-4xl",
     lg: "text-4xl md:text-5xl",

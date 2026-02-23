@@ -6,11 +6,11 @@ import React from "react";
 
 export const HomeHeader: React.FC<{ user?: User }> = ({ user }) => {
   return (
-    <div className="flex justify-between items-start">
+    <div className="flex flex-col md:flex-row justify-between items-start">
       <div className="flex flex-col items-start justify-start">
         <div className="flex gap-5 justify-center items-center">
-          <Title size="sm">{user?.name}'s Galaxy</Title>
-          <div className="px-4 py-1 w-fit rounded-full bg-gray-800 border border-[#22D3EE]/30">
+          <Title size="xs">{user?.name}'s Galaxy</Title>
+          <div className="px-4 py-1 w-fit rounded-full bg-gray-800 border border-[#22D3EE]/30 max-md:hidden">
             <span
               className="text-[#22D3EE] text-md"
               style={{
@@ -27,7 +27,7 @@ export const HomeHeader: React.FC<{ user?: User }> = ({ user }) => {
         </div>
       </div>
 
-      <div>
+      <div className="max-md:hidden">
         <p className="text-md text-gray-400 font-bold">Current Streak</p>
         <div className="flex items-center mt-1">
           <Flame className="text-orange-600" />

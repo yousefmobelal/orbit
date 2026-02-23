@@ -93,6 +93,12 @@ export function TaskManagementPanel({
     const task = tasks.find((t) => t._id === taskId);
     if (!task) return;
 
+    // Prevent uncompleting if already 10 active tasks
+    if (task.isCompleted && activeTasks.length >= 10) {
+      toast.error("You can't have more than 10 active tasks. Complete or delete a task first.");
+      return;
+    }
+
     updateTaskMutation.mutate({
       taskId,
       isCompleted: !task.isCompleted,
