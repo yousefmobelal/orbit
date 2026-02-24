@@ -190,8 +190,11 @@ export const PlanetDetails = () => {
           planetId={planet._id}
           level={planet.level}
           xp={planet.xp}
-          maxXp={100}
+          requiredXPForNextLevel={planet.requiredXPForNextLevel}
+          xpToNextLevel={planet.xpToNextLevel}
+          xpProgressPercent={planet.xpProgressPercent}
           streak={planet.streakCount}
+          lastCompletedDate={planet.lastCompletedDate}
           tasks={tasks}
           isMobile={
             typeof window !== "undefined" ? window.innerWidth < 768 : false

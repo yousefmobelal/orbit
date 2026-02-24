@@ -79,29 +79,6 @@ export const AboutCard = () => {
           color="#FBBF24"
         />
       </div>
-
-      <div className="pt-6 border-t border-white/10 space-y-3">
-        <div className="flex justify-between items-center">
-          <span className="text-[#9CA3AF] text-sm">Version</span>
-          <span
-            className="text-[#F9FAFB] font-semibold"
-            style={{ fontFamily: "Space Grotesk, sans-serif" }}
-          >
-            v1.0.0
-          </span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-[#9CA3AF] text-sm">Release Date</span>
-          <span className="text-[#F9FAFB]">February 2026</span>
-        </div>
-      </div>
-
-      <div className="mt-6 pt-6 border-t border-white/10">
-        <p className="text-center text-[#9CA3AF] text-sm">
-          Made with <span className="text-[#EF4444]">❤️</span> for productive
-          space explorers
-        </p>
-      </div>
     </motion.div>
   );
 };

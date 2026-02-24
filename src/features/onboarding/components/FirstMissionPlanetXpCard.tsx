@@ -63,7 +63,11 @@ export const FirstMissionPlanetXpCard: React.FC<
         )}
       </div>
 
-      <XpProgressBar xp={xpProgress} />
+      <XpProgressBar
+        progressPercent={xpProgress / 100}
+        currentXP={xpProgress}
+        requiredXPForNextLevel={100}
+      />
     </motion.div>
   );
 };

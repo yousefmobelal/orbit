@@ -8,8 +8,11 @@ export interface Planet {
   theme: Theme;
   level: number;
   xp: number;
+  requiredXPForNextLevel: number;
+  xpToNextLevel: number;
+  xpProgressPercent: number; // 0–1
   streakCount: number;
-  lastCompletedDate?: Date;
+  lastCompletedDate?: string | Date;
   order: number;
   isArchived: boolean;
   createdAt: Date;

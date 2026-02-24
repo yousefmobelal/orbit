@@ -1,13 +1,30 @@
 import { Sparkles } from "lucide-react";
 
 interface PanelStatsProps {
-  xp: number;
-  maxXp: number;
+  xpProgressPercent: number;
   streak: number;
+  lastCompletedDate?: string | Date;
 }
 
-export function PanelStats({ xp, maxXp, streak }: PanelStatsProps) {
-  const xpPercentage = Math.round((xp / maxXp) * 100);
+function formatDateDisplay(date?: string | Date) {
+  if (!date) return null;
+  const d = typeof date === "string" ? new Date(date) : date;
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+export function PanelStats({
+  xpProgressPercent,
+  streak,
+  lastCompletedDate,
+}: PanelStatsProps) {
+  const clamped = Math.max(0, Math.min(1, xpProgressPercent));
+  const xpPercentage = Math.round(clamped * 100);
+  const lastCompleted = formatDateDisplay(lastCompletedDate);
 
   return (
     <div className="grid grid-cols-2 gap-3">
@@ -64,8 +81,16 @@ export function PanelStats({ xp, maxXp, streak }: PanelStatsProps) {
           className="text-[#9CA3AF] text-xs ml-1"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
-          days
+          day{streak === 1 ? "" : "s"}
         </span>
+        {lastCompleted && (
+          <p
+            className="text-[#6B7280] text-[11px] mt-1"
+            style={{ fontFamily: "Inter, sans-serif" }}
+          >
+            Last completed: {lastCompleted}
+          </p>
+        )}
       </div>
     </div>
   );

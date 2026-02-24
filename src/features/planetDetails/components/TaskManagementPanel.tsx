@@ -23,8 +23,11 @@ interface TaskManagementPanelProps {
   planetId: string;
   level: number;
   xp: number;
-  maxXp: number;
+  requiredXPForNextLevel: number;
+  xpToNextLevel: number;
+  xpProgressPercent: number;
   streak: number;
+  lastCompletedDate?: string | Date;
   tasks: Task[];
   isMobile?: boolean;
 }
@@ -36,8 +39,10 @@ export function TaskManagementPanel({
   planetId,
   level,
   xp,
-  maxXp,
+  requiredXPForNextLevel,
+  xpProgressPercent,
   streak,
+  lastCompletedDate,
   tasks,
   isMobile = false,
 }: TaskManagementPanelProps) {
@@ -64,11 +69,10 @@ export function TaskManagementPanel({
   // Update task mutation
   const updateTaskMutation = useMutation({
     mutationFn: taskApi.update,
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.tasks(variables.taskId),
+        queryKey: queryKeys.tasks(planetId),
       });
-      toast.success("Task updated successfully!");
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to update task");
@@ -78,9 +82,9 @@ export function TaskManagementPanel({
   // Delete task mutation
   const deleteTaskMutation = useMutation({
     mutationFn: taskApi.delete,
-    onSuccess: (_, taskId) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.tasks(taskId),
+        queryKey: queryKeys.tasks(planetId),
       });
       toast.success("Task deleted successfully!");
     },
@@ -135,12 +139,19 @@ export function TaskManagementPanel({
     difficulty: TaskDifficulty,
     recurring: RecurringPattern,
   ) => {
-    updateTaskMutation.mutate({
-      taskId,
-      title,
-      difficulty,
-      recurring,
-    });
+    updateTaskMutation.mutate(
+      {
+        taskId,
+        title,
+        difficulty,
+        recurring,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Task updated successfully!");
+        },
+      },
+    );
   };
 
   return (
@@ -172,11 +183,15 @@ export function TaskManagementPanel({
                   planetName={planetName}
                   level={level}
                   xp={xp}
-                  maxXp={maxXp}
+                  requiredXPForNextLevel={requiredXPForNextLevel}
                   onClose={onClose}
                 />
 
-                <PanelStats xp={xp} maxXp={maxXp} streak={streak} />
+                <PanelStats
+                  xpProgressPercent={xpProgressPercent}
+                  streak={streak}
+                  lastCompletedDate={lastCompletedDate}
+                />
               </div>
 
               <TaskTabs

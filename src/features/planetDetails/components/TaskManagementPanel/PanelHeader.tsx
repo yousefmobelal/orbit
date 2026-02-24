@@ -5,7 +5,7 @@ interface PanelHeaderProps {
   planetName: string;
   level: number;
   xp: number;
-  maxXp: number;
+  requiredXPForNextLevel: number;
   onClose: () => void;
 }
 
@@ -13,7 +13,7 @@ export function PanelHeader({
   planetName,
   level,
   xp,
-  maxXp,
+  requiredXPForNextLevel,
   onClose,
 }: PanelHeaderProps) {
   return (
@@ -45,7 +45,9 @@ export function PanelHeader({
               className="text-[#9CA3AF] text-xs"
               style={{ fontFamily: "Inter, sans-serif" }}
             >
-              {xp}/{maxXp} XP
+              {requiredXPForNextLevel > 0
+                ? `${xp}/${requiredXPForNextLevel} XP`
+                : `${xp} XP`}
             </span>
           </div>
         </div>

@@ -7,6 +7,8 @@ import { storageKeys } from "@/lib/utils/storageKeys";
 import { planetApi } from "@/lib/api/client/planetApi";
 import { useOnBoardingStore } from "@/store/onboarding-store";
 import { taskApi } from "@/lib/api/client/taskApi";
+import { setAuthToken } from "@/lib/api/http";
+import { useUserStore } from "@/store/user-store";
 
 export async function signupAction({ request }: { request: Request }) {
   const formData = Object.fromEntries(await request.formData());
@@ -24,6 +26,8 @@ export async function signupAction({ request }: { request: Request }) {
 
     storage.set(storageKeys.ACCESS_TOKEN, response.accessToken);
     storage.set(storageKeys.REFRESH_TOKEN, response.refreshToken);
+    setAuthToken(response.accessToken);
+    useUserStore.setState({ isAuthenticated: true });
 
     const { firstPlanetData, firstTaskData } = useOnBoardingStore.getState();
 

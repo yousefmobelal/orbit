@@ -7,8 +7,11 @@ export interface User {
   };
   email: string;
   globalStreak: number;
-  lastActiveDate: Date;
+  lastActiveDate: string | Date;
   globalXP: number;
   globalLevel: number;
+  requiredXPForNextLevel: number;
+  xpToNextLevel: number;
+  xpProgressPercent: number;
   hasCreatedFirstTask: boolean;
 }

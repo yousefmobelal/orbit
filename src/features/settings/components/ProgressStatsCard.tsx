@@ -59,7 +59,12 @@ export const ProgressStatsCard = ({
       </h2>
 
       <div className="mb-6">
-        <XpProgressBar xp={user?.globalXP || 0} />
+        <XpProgressBar
+          progressPercent={user?.xpProgressPercent ?? 0}
+          currentXP={user?.globalXP ?? 0}
+          requiredXPForNextLevel={user?.requiredXPForNextLevel ?? 0}
+          xpToNextLevel={user?.xpToNextLevel ?? 0}
+        />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
