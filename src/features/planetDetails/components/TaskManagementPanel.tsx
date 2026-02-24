@@ -95,7 +95,9 @@ export function TaskManagementPanel({
 
     // Prevent uncompleting if already 10 active tasks
     if (task.isCompleted && activeTasks.length >= 10) {
-      toast.error("You can't have more than 10 active tasks. Complete or delete a task first.");
+      toast.error(
+        "You can't have more than 10 active tasks. Complete or delete a task first.",
+      );
       return;
     }
 

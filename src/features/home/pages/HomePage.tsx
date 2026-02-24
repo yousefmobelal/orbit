@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { HomeHeader } from "../components/HomeHeader";
 import { SettingsButton } from "../components/SettingsButton";
+import { AddPlanetButton } from "../components/AddPlanetButton";
 import { HomePlanets } from "../components/HomePlanets";
 
 export const HomePage = () => {
@@ -37,7 +38,10 @@ export const HomePage = () => {
   return (
     <div className="relative h-screen pt-8 px-2 md:px-5 lg:px-8">
       <HomeHeader user={user} />
-      <SettingsButton />
+      <div className="absolute bottom-5 right-5 flex items-center gap-3">
+        <AddPlanetButton />
+        <SettingsButton />
+      </div>
 
       <HomePlanets />
     </div>
