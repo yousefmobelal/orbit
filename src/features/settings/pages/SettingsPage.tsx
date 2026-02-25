@@ -24,7 +24,6 @@ export const SettingsPage = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Main Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12 space-y-6">
         <SettingsHeader />
 
@@ -40,7 +39,7 @@ export const SettingsPage = () => {
         />
 
         <AboutCard />
-        {/* Bottom Spacing */}
+
         <div className="h-12" />
       </div>
     </div>

@@ -13,7 +13,7 @@ import { HomePage } from "@/features/home/pages/HomePage";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { PlanetDetails } from "@/features/planetDetails/PlanetDetails";
+import { PlanetDetailsPage } from "@/features/planetDetails/PlanetDetailsPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { planetDetailsLoader } from "@/features/planetDetails/loaders/planetDetails.loader";
 import { SettingsPage } from "@/features/settings/pages/SettingsPage";
@@ -68,7 +68,7 @@ const router = createBrowserRouter([
           { index: true, element: <HomePage /> },
           {
             path: "planet/:id",
-            element: <PlanetDetails />,
+            element: <PlanetDetailsPage />,
             loader: ({ params }) =>
               planetDetailsLoader({ params: { id: params.id! } }),
           },

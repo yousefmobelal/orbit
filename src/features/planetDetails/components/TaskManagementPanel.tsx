@@ -14,20 +14,12 @@ import {
   TaskList,
   EditTaskDialog,
 } from "./TaskManagementPanel/index";
+import type { Planet } from "@/types/Planet";
 
 interface TaskManagementPanelProps {
   isOpen: boolean;
   onClose: () => void;
-  planetName: string;
-  planetColor: string;
-  planetId: string;
-  level: number;
-  xp: number;
-  requiredXPForNextLevel: number;
-  xpToNextLevel: number;
-  xpProgressPercent: number;
-  streak: number;
-  lastCompletedDate?: string | Date;
+  planet: Planet;
   tasks: Task[];
   isMobile?: boolean;
 }
@@ -35,14 +27,7 @@ interface TaskManagementPanelProps {
 export function TaskManagementPanel({
   isOpen,
   onClose,
-  planetName,
-  planetId,
-  level,
-  xp,
-  requiredXPForNextLevel,
-  xpProgressPercent,
-  streak,
-  lastCompletedDate,
+  planet,
   tasks,
   isMobile = false,
 }: TaskManagementPanelProps) {
@@ -58,7 +43,7 @@ export function TaskManagementPanel({
   const createTaskMutation = useMutation({
     mutationFn: taskApi.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tasks(planetId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tasks(planet._id) });
       toast.success("Task created successfully!");
     },
     onError: (error: Error) => {
@@ -71,11 +56,28 @@ export function TaskManagementPanel({
     mutationFn: taskApi.update,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.tasks(planetId),
+        queryKey: queryKeys.tasks(planet._id),
       });
+      toast.success("Task updated successfully!");
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to update task");
+    },
+  });
+
+  const markTaskCompletedMutation = useMutation({
+    mutationFn: taskApi.completeTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tasks(planet._id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.planet(planet._id),
+      });
+      toast.success("Task marked as completed!");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Failed to mark task as completed");
     },
   });
 
@@ -84,7 +86,7 @@ export function TaskManagementPanel({
     mutationFn: taskApi.delete,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.tasks(planetId),
+        queryKey: queryKeys.tasks(planet._id),
       });
       toast.success("Task deleted successfully!");
     },
@@ -97,18 +99,7 @@ export function TaskManagementPanel({
     const task = tasks.find((t) => t._id === taskId);
     if (!task) return;
 
-    // Prevent uncompleting if already 10 active tasks
-    if (task.isCompleted && activeTasks.length >= 10) {
-      toast.error(
-        "You can't have more than 10 active tasks. Complete or delete a task first.",
-      );
-      return;
-    }
-
-    updateTaskMutation.mutate({
-      taskId,
-      isCompleted: !task.isCompleted,
-    });
+    markTaskCompletedMutation.mutate(taskId);
   };
 
   const handleAddTask = (
@@ -117,7 +108,7 @@ export function TaskManagementPanel({
     recurring: RecurringPattern,
   ) => {
     createTaskMutation.mutate({
-      planetId,
+      planetId: planet._id,
       title,
       difficulty,
       recurring,
@@ -180,17 +171,17 @@ export function TaskManagementPanel({
             <div className="flex flex-col h-full">
               <div className="p-6 border-b border-white/10">
                 <PanelHeader
-                  planetName={planetName}
-                  level={level}
-                  xp={xp}
-                  requiredXPForNextLevel={requiredXPForNextLevel}
+                  planetName={planet.title}
+                  level={planet.level}
+                  xp={planet.xp}
+                  requiredXPForNextLevel={planet.requiredXPForNextLevel}
                   onClose={onClose}
                 />
 
                 <PanelStats
-                  xpProgressPercent={xpProgressPercent}
-                  streak={streak}
-                  lastCompletedDate={lastCompletedDate}
+                  xpProgressPercent={planet.xpProgressPercent}
+                  streak={planet.streakCount}
+                  lastCompletedDate={planet.lastCompletedDate}
                 />
               </div>
 

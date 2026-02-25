@@ -6,9 +6,8 @@ import { taskApi } from "@/lib/api/client/taskApi";
 import { queryKeys } from "@/lib/utils/queryKeys";
 import { toast } from "@/lib/utils/toast";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Task } from "./components/Task";
 import { Menu } from "lucide-react";
 import { TaskManagementPanel } from "./components/TaskManagementPanel";
 import { EditTaskDialog } from "./components/TaskManagementPanel/EditTaskDialog";
@@ -16,8 +15,9 @@ import type { Task as TaskType } from "@/types/Task";
 import type { TaskDifficulty } from "@/types/TaskDifficulty";
 import type { RecurringPattern } from "@/types/RecurringPattern";
 import { queryClient } from "@/lib/utils/queryClient";
+import { Task } from "./components/Task";
 
-export const PlanetDetails = () => {
+export const PlanetDetailsPage = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -38,12 +38,57 @@ export const PlanetDetails = () => {
   const {
     data: tasks,
     isLoading: tasksLoading,
-    isSuccess: tasksSucess,
+    isSuccess: tasksSuccess,
   } = useQuery({
     queryKey: queryKeys.tasks(id),
     queryFn: () => taskApi.getByPlanetId(id),
     enabled: isSuccess,
   });
+
+  const activeTasks = useMemo(() => {
+    if (!tasks) return [];
+    const activeTasks: TaskType[] = [];
+    const now = new Date();
+
+    for (const task of tasks) {
+      //
+      if (task.recurring === "none") {
+        if (!task.isCompleted) {
+          activeTasks.push(task);
+        }
+        continue;
+      }
+
+      if (!task.lastCompletedDate) {
+        activeTasks.push(task);
+        continue;
+      }
+
+      const lastCompleted = new Date(task.lastCompletedDate);
+      const diff = now.getTime() - lastCompleted.getTime();
+
+      switch (task.recurring) {
+        case "daily":
+          if (diff >= 24 * 60 * 60 * 1000) {
+            activeTasks.push(task);
+          }
+          break;
+
+        case "weekly":
+          if (diff >= 7 * 24 * 60 * 60 * 1000) {
+            activeTasks.push(task);
+          }
+          break;
+
+        case "monthly":
+          if (diff >= 30 * 24 * 60 * 60 * 1000) {
+            activeTasks.push(task);
+          }
+          break;
+      }
+    }
+    return activeTasks;
+  }, [tasks]);
 
   useEffect(() => {
     if (isError) {
@@ -105,8 +150,8 @@ export const PlanetDetails = () => {
       </div>
     );
   if (isError) return <ErrorState message={error.message} onRetry={refetch} />;
-  if (isSuccess && tasksSucess) {
-    const activeTasks = tasks.filter((task) => !task.isCompleted);
+
+  if (isSuccess && tasksSuccess) {
     const getDifficultyColors = (difficulty: string) => {
       switch (difficulty.toUpperCase()) {
         case "EASY":
@@ -185,16 +230,7 @@ export const PlanetDetails = () => {
         <TaskManagementPanel
           isOpen={isPanelOpen}
           onClose={() => setIsPanelOpen(false)}
-          planetName={planet.title}
-          planetColor={planet.theme.fromColor}
-          planetId={planet._id}
-          level={planet.level}
-          xp={planet.xp}
-          requiredXPForNextLevel={planet.requiredXPForNextLevel}
-          xpToNextLevel={planet.xpToNextLevel}
-          xpProgressPercent={planet.xpProgressPercent}
-          streak={planet.streakCount}
-          lastCompletedDate={planet.lastCompletedDate}
+          planet={planet}
           tasks={tasks}
           isMobile={
             typeof window !== "undefined" ? window.innerWidth < 768 : false

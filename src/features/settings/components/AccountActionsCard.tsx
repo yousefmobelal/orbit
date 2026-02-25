@@ -18,17 +18,13 @@ export const AccountActionsCard = () => {
   const queryClient = useQueryClient();
 
   const handleLogout = () => {
-    // Clear tokens from localStorage
     storage.remove(storageKeys.ACCESS_TOKEN);
     storage.remove(storageKeys.REFRESH_TOKEN);
 
-    // Clear all cached queries
     queryClient.clear();
 
-    // Show success message
     toast.success("Logged out successfully");
 
-    // Navigate to login page
     navigate("/auth/login");
   };
 
@@ -37,15 +33,14 @@ export const AccountActionsCard = () => {
     setDeleteLoading(true);
     try {
       await userApi.deleteAccount({ password, confirmation });
-      // Clear tokens from localStorage
+
       storage.remove(storageKeys.ACCESS_TOKEN);
       storage.remove(storageKeys.REFRESH_TOKEN);
-      // Clear all cached queries
+
       queryClient.clear();
       toast.success("Account deleted successfully");
-      navigate("/auth/login");
+      navigate("/");
     } catch (err: unknown) {
-      // Try to extract error message from axios error shape
       let message =
         "Failed to delete account. Please check your password and try again.";
       if (

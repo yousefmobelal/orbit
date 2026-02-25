@@ -10,9 +10,15 @@ export const taskApi = {
   getByPlanetId: async (planetId: string): Promise<Task[]> => {
     return http.get(`/task/planet/${planetId}`);
   },
+  getActiveTasksByPlanetId: async (planetId: string): Promise<Task[]> => {
+    return http.get(`/task/planet/${planetId}/active`);
+  },
   update: async (data: UpdateTaskInput): Promise<Task> => {
     const { taskId, ...updateData } = data;
     return http.patch(`/task/${taskId}`, updateData);
+  },
+  completeTask: async (taskId: string): Promise<Task> => {
+    return http.post(`/task/${taskId}/complete`);
   },
   delete: async (taskId: string): Promise<void> => {
     return http.delete(`/task/${taskId}`);

@@ -4,11 +4,18 @@ import { Subtitle } from "@/components/shared/Subtitle";
 import { Title } from "@/components/shared/Title";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { Form, useActionData, useNavigation } from "react-router-dom";
+import {
+  Form,
+  useActionData,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import { LoginSchema, type LoginFormData } from "../schemas/login.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
   const navigation = useNavigation();
   const actionData = useActionData() as {
     fieldErrors?: Record<string, string>;
@@ -51,8 +58,24 @@ export const LoginPage = () => {
           error={errors.password?.message || actionData?.fieldErrors?.password}
           {...register("password")}
         />
+        <motion.p
+          className="text-gray-400 text-start w-full"
+          style={{ fontFamily: "Inter, sans-serif" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.6 }}
+        >
+          Want to start your journey?
+          <button
+            onClick={() => navigate("/how-it-works")}
+            className="text-[#4DA3FF] hover:text-[#22D3EE] transition-colors underline ms-1"
+            type="button"
+          >
+            Start
+          </button>
+        </motion.p>
 
-        <div className="mt-5 w-full flex flex-col items-center justify-center">
+        <div className="mt-2 w-full flex flex-col items-center justify-center">
           {isSubmitting ? (
             <Loader />
           ) : (

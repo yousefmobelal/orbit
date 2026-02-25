@@ -91,7 +91,7 @@ export const ProfileCard = ({ user }: ProfileCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="bg-[#121826] rounded-3xl p-6 md:p-8 border border-white/10 hover:border-white/20 transition-all duration-300"
+      className="bg-[#121826] rounded-3xl max-h-fit p-6 md:p-8 border border-white/10 hover:border-white/20 transition-all duration-300"
       style={{
         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
       }}
