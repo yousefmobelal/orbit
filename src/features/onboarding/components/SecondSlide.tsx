@@ -5,7 +5,7 @@ export const SecondSlide = () => {
   return (
     <div className="bg-[#121826] rounded-2xl p-6 w-80 backdrop-blur-sm border border-white/10">
       <div className="flex items-center gap-3 mb-4">
-        <Planet fromColor="#10B981" viaColor="#22D3EE" toColor="#3B82F6" />
+        <Planet fromColor="#10B981" toColor="#3B82F6" />
 
         <h3
           className="text-[#F9FAFB]"

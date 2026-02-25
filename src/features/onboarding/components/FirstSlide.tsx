@@ -6,12 +6,7 @@ export const FirstSlide = () => {
     <>
       <div className="bg-[#121826] rounded-2xl p-6 w-80 backdrop-blur-sm border border-white/10">
         <div className="flex items-center gap-4 mb-4">
-          <Planet
-            fromColor="#4DA3FF"
-            viaColor="#8B5CF6"
-            toColor="#22D3EE"
-            size={16}
-          />
+          <Planet fromColor="#4DA3FF" toColor="#22D3EE" size={16} />
           <div>
             <h3
               className="text-[#F9FAFB] text-lg"
