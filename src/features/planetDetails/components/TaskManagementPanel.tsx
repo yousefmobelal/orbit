@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDialogState } from "../context/DialogStateContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "@/types/Task";
@@ -32,8 +33,8 @@ export function TaskManagementPanel({
   isMobile = false,
 }: TaskManagementPanelProps) {
   const [activeTab, setActiveTab] = useState<"active" | "completed">("active");
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const { editingTask, setEditingTask, isEditDialogOpen, setIsEditDialogOpen } =
+    useDialogState();
   const queryClient = useQueryClient();
 
   const activeTasks = tasks.filter((t) => !t.isCompleted);

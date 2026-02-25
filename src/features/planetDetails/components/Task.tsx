@@ -2,18 +2,18 @@ import { Planet } from "@/components/shared/Planet";
 import type { Task as TaskType } from "@/types/Task";
 import React from "react";
 import { TaskActionsMenu } from "./TaskManagementPanel/TaskActionsMenu";
+import { useTaskActions } from "../context/TaskActionsContext";
 
 export const Task: React.FC<{
   task: TaskType;
   colors: { from: string; to: string };
-  onUpdate?: (task: TaskType) => void;
-  onDelete?: (taskId: string) => void;
-}> = ({ task, colors, onUpdate, onDelete }) => {
+}> = ({ task, colors }) => {
+  const { handleUpdateTask, handleDeleteTask } = useTaskActions();
   return (
     <TaskActionsMenu
       task={task}
-      onUpdate={onUpdate}
-      onDelete={onDelete}
+      onUpdate={handleUpdateTask}
+      onDelete={handleDeleteTask}
       align="center"
     >
       <div

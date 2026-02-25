@@ -13,7 +13,13 @@ import { Menu } from "lucide-react";
 import { TaskManagementPanel } from "./components/TaskManagementPanel";
 import { EditTaskDialog } from "./components/TaskManagementPanel/EditTaskDialog";
 import type { Task as TaskType } from "@/types/Task";
-import { Task } from "./components/Task";
+import { TaskGrid } from "./components/TaskGrid";
+import { TaskActionsContext } from "./context/TaskActionsContext";
+import {
+  RECURRING_INTERVALS_MS,
+  TASK_DIFFICULTY_COLORS,
+} from "@/lib/utils/constants";
+import { DialogStateProvider } from "./context/DialogStateContext";
 
 export const PlanetDetailsPage = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -67,19 +73,19 @@ export const PlanetDetailsPage = () => {
 
       switch (task.recurring) {
         case "daily":
-          if (diff >= 24 * 60 * 60 * 1000) {
+          if (diff >= RECURRING_INTERVALS_MS.daily) {
             activeTasks.push(task);
           }
           break;
 
         case "weekly":
-          if (diff >= 7 * 24 * 60 * 60 * 1000) {
+          if (diff >= RECURRING_INTERVALS_MS.weekly) {
             activeTasks.push(task);
           }
           break;
 
         case "monthly":
-          if (diff >= 30 * 24 * 60 * 60 * 1000) {
+          if (diff >= RECURRING_INTERVALS_MS.monthly) {
             activeTasks.push(task);
           }
           break;
@@ -95,10 +101,15 @@ export const PlanetDetailsPage = () => {
   }, [isError, error]);
 
   const { handleUpdateTaskSubmit, handleDeleteTask } = useTaskMutations(id);
-
   const handleUpdateTask = (task: TaskType) => {
     setEditingTask(task);
     setIsEditDialogOpen(true);
+  };
+
+  const taskActionsContextValue = {
+    handleUpdateTask,
+    handleDeleteTask,
+    handleUpdateTaskSubmit,
   };
 
   if (isLoading)
@@ -113,13 +124,13 @@ export const PlanetDetailsPage = () => {
     const getDifficultyColors = (difficulty: string) => {
       switch (difficulty.toUpperCase()) {
         case "EASY":
-          return { from: "#6B7280", to: "#9CA3AF" };
+          return TASK_DIFFICULTY_COLORS.EASY;
         case "MEDIUM":
-          return { from: "#F59E0B", to: "#FBBF24" };
+          return TASK_DIFFICULTY_COLORS.MEDIUM;
         case "HARD":
-          return { from: "#EF4444", to: "#F87171" };
+          return TASK_DIFFICULTY_COLORS.HARD;
         default:
-          return { from: "#10B981", to: "#34D399" };
+          return TASK_DIFFICULTY_COLORS.DEFAULT;
       }
     };
     const getTopMarginClass = (index: number) => {
@@ -144,66 +155,46 @@ export const PlanetDetailsPage = () => {
     };
 
     return (
-      <div className="relative h-screen overflow-hidden p-8">
-        <HalfPlanet planet={planet} />
+      <DialogStateProvider>
+        <TaskActionsContext.Provider value={taskActionsContextValue}>
+          <div className="relative h-screen overflow-hidden p-8">
+            <HalfPlanet planet={planet} />
 
-        <div className="grid grid-cols-5 gap-6 relative">
-          {tasksLoading ? (
-            <div className="col-span-5 flex justify-center">
-              <Loader />
-            </div>
-          ) : activeTasks.length > 0 ? (
-            groupTasksIntoColumns().map((column, columnIndex) => (
-              <div
-                key={columnIndex}
-                className={`flex flex-col gap-10 ${getTopMarginClass(columnIndex)}`}
-              >
-                {column.map((task) => {
-                  const colors = getDifficultyColors(task.difficulty);
-                  return (
-                    <Task
-                      key={task._id}
-                      task={task}
-                      colors={colors}
-                      onUpdate={handleUpdateTask}
-                      onDelete={handleDeleteTask}
-                    />
-                  );
-                })}
-              </div>
-            ))
-          ) : (
-            <div className="col-span-5 text-2xl text-center text-white/60">
-              No active tasks! Click the button below to add some and start
-            </div>
-          )}
-        </div>
-        <button
-          onClick={() => setIsPanelOpen(true)}
-          className="size-12 rounded-full group hover:border-[#22D3EE] bg-[#121826] flex justify-center items-center border border-gray-400 absolute bottom-5 right-5 cursor-pointer"
-        >
-          <Menu className="text-gray-400 group-hover:text-[#22D3EE]" />
-        </button>
+            <TaskGrid
+              activeTasks={activeTasks}
+              tasksLoading={tasksLoading}
+              getDifficultyColors={getDifficultyColors}
+              getTopMarginClass={getTopMarginClass}
+              groupTasksIntoColumns={groupTasksIntoColumns}
+            />
+            <button
+              onClick={() => setIsPanelOpen(true)}
+              className="size-12 rounded-full group hover:border-[#22D3EE] bg-[#121826] flex justify-center items-center border border-gray-400 absolute bottom-5 right-5 cursor-pointer"
+            >
+              <Menu className="text-gray-400 group-hover:text-[#22D3EE]" />
+            </button>
 
-        <TaskManagementPanel
-          isOpen={isPanelOpen}
-          onClose={() => setIsPanelOpen(false)}
-          planet={planet}
-          tasks={tasks}
-          isMobile={
-            typeof window !== "undefined" ? window.innerWidth < 768 : false
-          }
-        />
+            <TaskManagementPanel
+              isOpen={isPanelOpen}
+              onClose={() => setIsPanelOpen(false)}
+              planet={planet}
+              tasks={tasks}
+              isMobile={
+                typeof window !== "undefined" ? window.innerWidth < 768 : false
+              }
+            />
 
-        {editingTask && (
-          <EditTaskDialog
-            task={editingTask}
-            open={isEditDialogOpen}
-            onOpenChange={setIsEditDialogOpen}
-            onUpdate={handleUpdateTaskSubmit}
-          />
-        )}
-      </div>
+            {editingTask && (
+              <EditTaskDialog
+                task={editingTask}
+                open={isEditDialogOpen}
+                onOpenChange={setIsEditDialogOpen}
+                onUpdate={handleUpdateTaskSubmit}
+              />
+            )}
+          </div>
+        </TaskActionsContext.Provider>
+      </DialogStateProvider>
     );
   }
 };
