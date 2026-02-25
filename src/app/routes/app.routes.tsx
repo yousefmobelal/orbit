@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { WelcomePage } from "../features/onboarding/pages/WelcomePage";
-import { HowItWorksPage } from "../features/onboarding/pages/HowItWorksPage";
+import { WelcomePage } from "../../features/onboarding/pages/WelcomePage";
+import { HowItWorksPage } from "../../features/onboarding/pages/HowItWorksPage";
 import { CustomizePlanetPage } from "@/features/onboarding/pages/CustomizePlanetPage";
 import { AddYourFirstMissionPage } from "@/features/onboarding/pages/AddYourFirstMissionPage";
 import { themesLoader } from "@/features/onboarding/loaders/themes.loader";
@@ -17,31 +17,29 @@ import { PlanetDetailsPage } from "@/features/planetDetails/PlanetDetailsPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { planetDetailsLoader } from "@/features/planetDetails/loaders/planetDetails.loader";
 import { SettingsPage } from "@/features/settings/pages/SettingsPage";
+import { rootRedirectLoader } from "./rootRedicrect.loader";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    loader: rootRedirectLoader,
+  },
+
+  {
+    path: "/onboarding",
     element: <OnBoardingLayout />,
     children: [
-      {
-        index: true,
-        element: <WelcomePage />,
-      },
-      {
-        path: "how-it-works",
-        element: <HowItWorksPage />,
-      },
+      { index: true, element: <WelcomePage /> },
+      { path: "how-it-works", element: <HowItWorksPage /> },
       {
         path: "customize-planet",
         loader: themesLoader,
         element: <CustomizePlanetPage />,
       },
-      {
-        path: "add-first-mission",
-        element: <AddYourFirstMissionPage />,
-      },
+      { path: "add-first-mission", element: <AddYourFirstMissionPage /> },
     ],
   },
+
   {
     path: "/auth",
     element: <AuthLayout />,
@@ -58,11 +56,12 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
+    path: "/app",
     element: <ProtectedRoute />,
     children: [
       {
-        path: "home",
         element: <AppLayout />,
         children: [
           { index: true, element: <HomePage /> },
@@ -80,12 +79,12 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "*",
     element: <NotFoundPage />,
   },
 ]);
-
 export function AppRoutes() {
   return <RouterProvider router={router} />;
 }

@@ -25,7 +25,7 @@ export async function loginAction({ request }: { request: Request }) {
     setAuthToken(response.accessToken);
     useUserStore.setState({ isAuthenticated: true });
 
-    return redirect("/home");
+    return redirect("/app");
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {

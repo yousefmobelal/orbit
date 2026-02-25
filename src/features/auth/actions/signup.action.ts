@@ -44,7 +44,7 @@ export async function signupAction({ request }: { request: Request }) {
 
     // Optionally clear onboarding data after use
     useOnBoardingStore.getState().reset();
-    return redirect("/home");
+    return redirect("/app");
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {

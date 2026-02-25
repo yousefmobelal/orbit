@@ -54,7 +54,7 @@ export function CustomizePlanetPage() {
       fromColor: selectedTheme!.fromColor,
       toColor: selectedTheme!.toColor,
     });
-    navigate("/add-first-mission");
+    navigate("/onboarding/add-first-mission");
   }
 
   return (

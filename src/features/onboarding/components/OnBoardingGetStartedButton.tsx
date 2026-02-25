@@ -5,7 +5,7 @@ export const OnBoardingGetStartedButton = () => {
   const navigate = useNavigate();
   return (
     <Button
-      onClick={() => navigate("/how-it-works")}
+      onClick={() => navigate("/onboarding/how-it-works")}
       animateDelay={0.7}
       hoverScale={1.09}
     >

@@ -67,7 +67,7 @@ export const LoginPage = () => {
         >
           Want to start your journey?
           <button
-            onClick={() => navigate("/how-it-works")}
+            onClick={() => navigate("/onboarding/how-it-works")}
             className="text-[#4DA3FF] hover:text-[#22D3EE] transition-colors underline ms-1"
             type="button"
           >

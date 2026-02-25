@@ -1,5 +1,5 @@
 import { queryClient } from "@/lib/utils/queryClient";
-import { AppRoutes } from "./app.routes";
+import { AppRoutes } from "./routes/app.routes";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

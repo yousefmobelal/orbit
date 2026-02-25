@@ -55,7 +55,7 @@ export function AddPlanetDialog({ open, onOpenChange }: AddPlanetDialogProps) {
       setPlanetName("");
       setSelectedThemeId(null);
       onOpenChange(false);
-      navigate(`/home/planet/${data.planet._id}`);
+      navigate(`/app/planet/${data.planet._id}`);
       toast.success("Planet created!");
     },
     onError: (error: Error) => {
