@@ -1,5 +1,3 @@
-
-
 # 🚀 Orbit: Gamified Productivity & Habit Tracker
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -54,8 +52,6 @@ cp .env.example .env
 ```sh
 npm run dev
 ```
-
-Visit [http://localhost:5173](http://localhost:5173) to view the app.
 
 ---
 
