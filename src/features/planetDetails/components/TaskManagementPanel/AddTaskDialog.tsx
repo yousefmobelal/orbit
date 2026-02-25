@@ -59,7 +59,6 @@ export function AddTaskDialog({ onAdd }: AddTaskDialogProps) {
           </DialogHeader>
 
           <div className="grid gap-6 py-6">
-            {/* Title Input */}
             <div className="grid gap-2">
               <Label htmlFor="title">Task Title</Label>
               <Input
@@ -72,7 +71,6 @@ export function AddTaskDialog({ onAdd }: AddTaskDialogProps) {
               />
             </div>
 
-            {/* Difficulty Selection */}
             <div className="grid gap-3">
               <Label>Difficulty</Label>
               <div className="grid grid-cols-3 gap-3">
@@ -115,7 +113,6 @@ export function AddTaskDialog({ onAdd }: AddTaskDialogProps) {
               </div>
             </div>
 
-            {/* Recurring Pattern */}
             <div className="grid gap-3">
               <Label>Recurrence</Label>
               <div className="grid grid-cols-2 gap-3">

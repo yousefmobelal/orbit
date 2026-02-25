@@ -5,16 +5,14 @@ import { planetApi } from "@/lib/api/client/planetApi";
 import { taskApi } from "@/lib/api/client/taskApi";
 import { queryKeys } from "@/lib/utils/queryKeys";
 import { toast } from "@/lib/utils/toast";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useTaskMutations } from "./hooks/useTaskMutations";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { TaskManagementPanel } from "./components/TaskManagementPanel";
 import { EditTaskDialog } from "./components/TaskManagementPanel/EditTaskDialog";
 import type { Task as TaskType } from "@/types/Task";
-import type { TaskDifficulty } from "@/types/TaskDifficulty";
-import type { RecurringPattern } from "@/types/RecurringPattern";
-import { queryClient } from "@/lib/utils/queryClient";
 import { Task } from "./components/Task";
 
 export const PlanetDetailsPage = () => {
@@ -96,51 +94,11 @@ export const PlanetDetailsPage = () => {
     }
   }, [isError, error]);
 
-  // Update task mutation
-  const updateTaskMutation = useMutation({
-    mutationFn: taskApi.update,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tasks(id) });
-      toast.success("Task updated successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to update task");
-    },
-  });
-
-  // Delete task mutation
-  const deleteTaskMutation = useMutation({
-    mutationFn: taskApi.delete,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tasks(id) });
-      toast.success("Task deleted successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to delete task");
-    },
-  });
+  const { handleUpdateTaskSubmit, handleDeleteTask } = useTaskMutations(id);
 
   const handleUpdateTask = (task: TaskType) => {
     setEditingTask(task);
     setIsEditDialogOpen(true);
-  };
-
-  const handleUpdateTaskSubmit = (
-    taskId: string,
-    title: string,
-    difficulty: TaskDifficulty,
-    recurring: RecurringPattern,
-  ) => {
-    updateTaskMutation.mutate({
-      taskId,
-      title,
-      difficulty,
-      recurring,
-    });
-  };
-
-  const handleDeleteTask = (taskId: string) => {
-    deleteTaskMutation.mutate(taskId);
   };
 
   if (isLoading)
